@@ -1,4 +1,4 @@
-package server;
+
 
 import static org.junit.Assert.*;
 
@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 
 import org.junit.Test;
-
-import com.kickass.Server;
 
 public class ServerTest {
 
