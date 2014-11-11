@@ -9,8 +9,13 @@ import java.net.Socket;
 public class Server {
 	public static void main(String[] args) throws IOException {
 		ServerSocket ss = new ServerSocket(Integer.parseInt(args[1]));
-		Socket socket = ss.accept();
-        Thread process = new ProcessThread(socket);
-        process.start();
+		try {
+			Socket socket = ss.accept();
+	        Thread process = new ProcessThread(socket);
+	        process.start();
+		}
+		finally {
+			ss.close();
+		}
 	}
 }
