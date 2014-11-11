@@ -9,7 +9,7 @@ import java.net.Socket;
 public class Server {
 
 	public static void main(String[] args) throws IOException {
-		
+		/*
 		ServerSocket serverSocket = new ServerSocket(Integer.parseInt(args[1])); 
 		Socket clientSocket = serverSocket.accept();
 		PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -21,6 +21,9 @@ public class Server {
 		 
 		out.write(response);
 		out.flush();
+		*/
 		
+		WebServer ws = new WebServer(Integer.parseInt(args[1]));
+		ws.sendResponse();
 	}
 }

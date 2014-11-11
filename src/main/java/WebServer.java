@@ -12,6 +12,7 @@ public class WebServer {
 	
 	public WebServer(int port) throws IOException {
 		serverSocket = new ServerSocket(port);
+		clientSocket = serverSocket.accept();
 	}
 	
 	public void sendResponse() throws IOException {
