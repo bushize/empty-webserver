@@ -7,7 +7,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
-
 public class ProcessThread extends Thread {
 	private Socket socket;
 	private String response;
@@ -39,7 +38,15 @@ public class ProcessThread extends Thread {
 			System.out.println("RECV:" + httpMethod);
 			System.out.println("RECV:" + path);
 			
-			response = getResponse(httpMethod, path);
+			//response = getResponse(httpMethod, path);
+			if (path.startsWith("/"))
+		           path = baseurl + path;
+		        else
+		           path = baseurl + "/" + path;
+			
+			HttpResponse httpResponse = new HttpResponse();
+			response = httpResponse.getResponse(httpMethod, path);
+			System.out.println(response);
 			
 			out = new PrintWriter(socket.getOutputStream(), true);
 			out.write(response);
