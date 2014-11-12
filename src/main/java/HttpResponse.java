@@ -11,12 +11,14 @@ public class HttpResponse {
 	public String getResponse(String httpMethod, String url) {
 		this.httpMethod = httpMethod;
 		this.url = url;
+		String statusText = "OK";
 		
 		if (httpMethod.equals("GET")) {
 			if(checkURL(url)) {
 				statusCode = 200;
 			} else {
 				statusCode = 404;
+				statusText = "Not Found";
 			}
 		} else if (httpMethod.equals("POST") || httpMethod.equals("PUT") 
 				|| httpMethod.equals("DELETE")) {
@@ -27,21 +29,6 @@ public class HttpResponse {
 			statusCode = 200;
 		}
 		
-		
-		String statusText;;
-		switch(statusCode) {
-		case 404:
-			statusText = "Not Found";
-			break;
-		case 400:
-			statusText = "Bad Request";
-			break;
-		case 500:
-			statusText = "Interal Error";
-			break;
-		default:
-			statusText = "OK";
-		}
 		String responseBody = "<h1>" + statusCode + " " + statusText + "</h1>";
 		String responseHeaderStatus = "HTTP/1.1 " + statusCode + " " + statusText + "\r\n";
 		

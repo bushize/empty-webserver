@@ -26,7 +26,6 @@ public class ServerTest {
 		serverSocket = new ServerSocket(PORT);
 	}
 
-
 	@Test
 	public void checkResponse() throws IOException {
 
@@ -47,5 +46,6 @@ public class ServerTest {
         assertEquals(response, ((ProcessThread) process).getResponse("GET", "/abc"));
             
 	}
+
 
 }
