@@ -5,12 +5,12 @@ public class HttpResponse {
 
 	private String response;
 	private int statusCode;
-	private String httpMethod;
-	private String url;
+	//private String httpMethod;
+	//private String url;
 	
 	public String getResponse(String httpMethod, String url) {
-		this.httpMethod = httpMethod;
-		this.url = url;
+		//this.httpMethod = httpMethod;
+		//this.url = url;
 		String statusText = "OK";
 		
 		if (httpMethod.equals("GET")) {
