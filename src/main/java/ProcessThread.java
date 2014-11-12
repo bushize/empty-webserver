@@ -28,23 +28,37 @@ public class ProcessThread extends Thread {
 			        new InputStreamReader(socket.getInputStream()));
 			
 			StringTokenizer tokenizedLine = new StringTokenizer(in.readLine());
-			String str = tokenizedLine.nextToken();
-			String p = tokenizedLine.nextToken();
+			String httpMethod = tokenizedLine.nextToken();
+			String path = tokenizedLine.nextToken();
 			
-			System.out.println("RECV:" + str);
-			System.out.println("RECV:" + p);
+			System.out.println("RECV:" + httpMethod);
+			System.out.println("RECV:" + path);
 			
-			if (str.equals("GET") && pathIsGood(p)) {
-				response = "HTTP/1.1 200 OK\r\n" +
-					    "Content-Length: 0\r\n" +
-					    "Content-Type: text/html\r\n\r\n" +
-					    "<h1>200 OK</h1>";				
-			}
-			else {
-				response = "HTTP/1.1 404 Not Found\r\n" +
-					    "Content-Length: 0\r\n" +
-					    "Content-Type: text/html\r\n\r\n" +
-					    "<h1>404 Not Found</h1>"; 
+			String response200 = "HTTP/1.1 200 OK\r\n" +
+				    "Content-Length: 0\r\n" +
+				    "Content-Type: text/html\r\n\r\n" +
+				    "<h1>200 OK</h1>";
+			
+			String response404 = "HTTP/1.1 404 Not Found\r\n" +
+				    "Content-Length: 0\r\n" +
+				    "Content-Type: text/html\r\n\r\n" +
+				    "<h1>404 Not Found</h1>";
+			
+			String response400 = "HTTP/1.1 400 Not Found\r\n" +
+				    "Content-Length: 0\r\n" +
+				    "Content-Type: text/html\r\n\r\n" +
+				    "<h1>400 bad request</h1>";
+			
+			if (httpMethod.equals("GET")) {
+				if(pathIsGood(path)) {
+					response = response200;	
+				} else {
+					response = response404;
+				}
+			} else if (httpMethod.equals("POST") || httpMethod.equals("PUT")) {
+				response = response200;
+			} else {
+				 response = response400;
 			}
 			
 			out = new PrintWriter(socket.getOutputStream(), true);
