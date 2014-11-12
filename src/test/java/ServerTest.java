@@ -19,34 +19,33 @@ public class ServerTest {
 	
 	private ServerSocket serverSocket;
 	private final int PORT = 5000;
+	private FakeClient fc;
 	
 	@Before
 	public void setUp() throws IOException {
 		serverSocket = new ServerSocket(PORT);
 	}
-/*
+
+
 	@Test
 	public void checkResponse() throws IOException {
 
-        //client
-        Socket client = new Socket("localhost", 5000);
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(client.getInputStream()));
-        PrintWriter out = new PrintWriter(client.getOutputStream(), true);
-        out.println("client input HERE HERHEHREHRHEHR");
+        //client   
+        fc = new FakeClient(new Socket("localhost", 5000));
+        fc.sendHandShake();
         
 		//server
 		Socket socket = serverSocket.accept();
-        Thread process = new ProcessThread(socket);
+        Thread process = new ProcessThread(socket, "/c/training/cob_spec/public");
         process.start();	
         
         String 	response = "HTTP/1.1 404 Not Found\r\n" +
-			    "Content-Length: 22\r\n" +
+			    "Content-Length: 0\r\n" +
 			    "Content-Type: text/html\r\n\r\n" +
 			    "<h1>404 Not Found</h1>";
         
-        assertEquals(response, ((ProcessThread) process).getResponse());
+        assertEquals(response, ((ProcessThread) process).getResponse("GET", "/abc"));
             
 	}
-*/
+
 }
