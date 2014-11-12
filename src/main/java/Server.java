@@ -8,6 +8,7 @@ import java.net.Socket;
 
 public class Server {
 	public static void main(String[] args) throws IOException {
+		/*
 		ServerSocket ss = new ServerSocket(Integer.parseInt(args[1]));
 		String path = args[3];
 		try {
@@ -18,5 +19,12 @@ public class Server {
 		finally {
 			ss.close();
 		}
+		*/
+		int port = Integer.parseInt(args[1]);
+		String path = args[3];
+		
+        Thread process = new ProcessThread(port, path);
+        process.start();
+		
 	}
 }
