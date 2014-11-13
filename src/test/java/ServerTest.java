@@ -23,11 +23,10 @@ public class ServerTest {
 
         //client   
         fc = new FakeClient(new Socket("localhost", 5000));
-        fc.sendHandShake();
+        fc.send200Response();
         
 		//server
 		Socket socket = serverSocket.accept();
-
         Thread process = new Process(socket, "/c/training/cob_spec/public");
         process.start();
 
