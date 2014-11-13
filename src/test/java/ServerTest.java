@@ -1,18 +1,10 @@
 import static org.junit.Assert.*;
-
-import java.io.BufferedReader;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.omg.CORBA.portable.InputStream;
-import org.omg.CORBA.portable.OutputStream;
 
 
 public class ServerTest {
@@ -26,8 +18,9 @@ public class ServerTest {
 		serverSocket = new ServerSocket(PORT);
 	}
 
+
 	@Test
-	public void ServerisRuning() throws IOException {
+	public void ServerStarts() throws IOException {
 
         //client   
         fc = new FakeClient(new Socket("localhost", 5000));
@@ -36,10 +29,35 @@ public class ServerTest {
 		//server
 		Socket socket = serverSocket.accept();
         Thread process = new ProcessThread(socket, "/c/training/cob_spec/public");
-        process.start();	
-        
+        process.start();
+
+        fc.closeConnection();
+
         assertTrue(process.isAlive());
 	}
+
+	@Test
+	public void ServerReceivesHandShake() throws IOException {
+
+		DataInputStream input;
+
+		//client
+		fc = new FakeClient(new Socket("localhost", 5000));
+		fc.sendHandShake();
+
+		//server
+		Socket socket = serverSocket.accept();
+		Thread process = new ProcessThread(socket, "/c/training/cob_spec/public");
+		process.start();
+
+		input = new DataInputStream(socket.getInputStream());
+
+	    fc.closeConnection();
+
+		assertEquals("localhost/127.0.0.1:5000", input.readUTF());
+
+	}
+	
 
 
 }

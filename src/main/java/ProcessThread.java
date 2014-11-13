@@ -29,39 +29,50 @@ public class ProcessThread extends Thread {
 		BufferedReader in;
 		
 		try {					
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));					
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
 			response = getSocketInput(in.readLine());
-			
-			out = new PrintWriter(socket.getOutputStream(), true);
-			out.write(response);
-			out.flush();	
+			if ( response !=null){
+				out = new PrintWriter(socket.getOutputStream(), true);
+				out.write(response);
+				out.flush();
+			}
+
 			socket.close();
 			
 		} catch (IOException e) {		
 			e.printStackTrace();
-		}	 
-			
+
 	}
 
+}
+
 	private String getSocketInput(String readLine) {
-		StringTokenizer tokenizedLine = new StringTokenizer(readLine);
-		String httpMethod = tokenizedLine.nextToken();
-		String path = tokenizedLine.nextToken();
-		//String body = tokenizedLine.nextToken();
-		
-		if (path.startsWith("/"))
-	           path = baseurl + path;
+
+		if (readLine != null) {
+			StringTokenizer tokenizedLine = new StringTokenizer(readLine);
+			String httpMethod = tokenizedLine.nextToken();
+			String path = tokenizedLine.nextToken();
+			//String body = tokenizedLine.nextToken();
+
+			if (path.startsWith("/"))
+				path = baseurl + path;
+			else
+				path = baseurl + "/" + path;
+
+			HttpResponse httpResponse = new HttpResponse();
+			response = httpResponse.getResponse(httpMethod, path);
+
+			System.out.println("METHOD:" + httpMethod);
+			System.out.println("PATH:" + path);
+			//System.out.println("BODY:" + body);
+			System.out.println(response);
+			return response;
+		}
 		else
-	           path = baseurl + "/" + path;
-		
-		HttpResponse httpResponse = new HttpResponse();
-		response = httpResponse.getResponse(httpMethod, path);
-		
-		System.out.println("METHOD:" + httpMethod);
-		System.out.println("PATH:" + path);
-		//System.out.println("BODY:" + body);
-		System.out.println(response);		
-		return response;
+		{
+			return null;
+		}
 	}
 
 }
