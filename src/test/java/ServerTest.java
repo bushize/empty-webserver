@@ -35,7 +35,7 @@ public class ServerTest {
         
 		//server
 		Socket socket = serverSocket.accept();
-        Thread process = new ProcessThread(socket, "/c/training/cob_spec/public");
+        Thread process = new Process(socket, "/c/training/cob_spec/public");
         process.start();	
         
         assertTrue(process.isAlive());
