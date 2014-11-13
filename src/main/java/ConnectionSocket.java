@@ -9,7 +9,8 @@ import java.util.StringTokenizer;
 public class ConnectionSocket {
 	
 	private Socket socket;
-	
+
+
 	public ConnectionSocket(Socket socket) {
 		this.socket = socket;
 	}
@@ -18,12 +19,13 @@ public class ConnectionSocket {
 		
 		String response;
 		BufferedReader in;
-		
-		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));					
+
+
+		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		response = in.readLine();
 		
 		StringTokenizer tokenizedLine = new StringTokenizer(response);
-		
+
 		String httpMethod = tokenizedLine.nextToken();
 		String path = tokenizedLine.nextToken();
 		
@@ -42,7 +44,7 @@ public class ConnectionSocket {
 		
 		return response;
 	}	
-	
+
 	public void writeOutput(String str) throws IOException {
 		PrintWriter out;
 		out = new PrintWriter(socket.getOutputStream(), true);
@@ -53,5 +55,9 @@ public class ConnectionSocket {
 	
 	public void end() throws IOException {
 		socket.close();
+	}
+
+	public boolean ClosedState(){
+		return socket.isClosed();
 	}
 }
