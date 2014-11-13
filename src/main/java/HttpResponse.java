@@ -15,18 +15,16 @@ public class HttpResponse {
     }
 
     public void generateResponse(String httpMethod, String url) {
-        //System.out.println(url);
+        System.out.println(url);
 
         if (httpMethod.equals("GET")) {
-            if(url == "logs" || url == "/logs") {
+            if(url.contains("logs")) {
                 statusCode = 401;
-                //statusText = "Authentication required";
 
             } else if(checkURL(url)) {
                 statusCode = 200;
             } else {
                 statusCode = 404;
-                //statusText = "Not Found";
             }
         } else if (httpMethod.equals("POST") || httpMethod.equals("PUT")
                 || httpMethod.equals("DELETE")) {
