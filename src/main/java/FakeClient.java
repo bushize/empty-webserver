@@ -21,9 +21,7 @@ public class FakeClient {
 
 	public void sendHandShake() throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(stream));
-        System.out.println(stream.toString());
         PrintWriter out = new PrintWriter(client.getOutputStream(), true);
-
 	}
 	
 

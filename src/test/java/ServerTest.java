@@ -27,7 +27,7 @@ public class ServerTest {
 	}
 
 	@Test
-	public void checkResponse() throws IOException {
+	public void ServerisRuning() throws IOException {
 
         //client   
         fc = new FakeClient(new Socket("localhost", 5000));
@@ -38,13 +38,7 @@ public class ServerTest {
         Thread process = new ProcessThread(socket, "/c/training/cob_spec/public");
         process.start();	
         
-        String 	response = "HTTP/1.1 404 Not Found\r\n" +
-			    "Content-Length: 0\r\n" +
-			    "Content-Type: text/html\r\n\r\n" +
-			    "<h1>404 Not Found</h1>";
-        
-        //assertEquals(response, ((ProcessThread) process).getResponse("GET", "/abc"));
-            
+        assertTrue(process.isAlive());
 	}
 
 
