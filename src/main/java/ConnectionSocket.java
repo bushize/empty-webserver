@@ -33,9 +33,10 @@ public class ConnectionSocket {
 			path = baseurl + "/" + path;
 		
 		HttpResponse httpResponse = new HttpResponse();
-		response = httpResponse.getResponse(httpMethod, path);
-		
-		System.out.println("METHOD:" + httpMethod);
+		httpResponse.generateResponse(httpMethod, path);
+        response = httpResponse.getResponse();
+
+                System.out.println("METHOD:" + httpMethod);
 		System.out.println("PATH:" + path);
 		System.out.println(response);		
 		
