@@ -38,10 +38,12 @@ public class ConnectionSocket {
 		httpResponse.generateResponse(httpMethod, path);
         response = httpResponse.getResponse();
 
-                System.out.println("METHOD:" + httpMethod);
+        /*
+        System.out.println("METHOD:" + httpMethod);
 		System.out.println("PATH:" + path);
 		System.out.println(response);		
-		
+		*/
+        
 		return response;
 	}	
 

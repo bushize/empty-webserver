@@ -19,10 +19,6 @@ public class ConnectionSocketTest {
 		cs.end();
 		serverSocket.close();
 		assertTrue(cs.ClosedState());
-
 	}
-
-
-	
 
 }
