@@ -58,5 +58,13 @@ public class HttpResponse {
 		
 		return true;
 	}
+	
+	public void setContentLength () {
+		
+	}
+	
+	public void setContentType () {
+		
+	}
 
 }
