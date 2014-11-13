@@ -8,7 +8,7 @@ import org.junit.Test;
 
 public class FileSystemTest {
 	FileSystem dir;
-	String file = "/Users/sunny.wang/java_training/cob_spec/public/test";
+	String file = "/";
 	
 	@Before
 	public void SetUp() {
