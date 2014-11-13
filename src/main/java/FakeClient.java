@@ -14,7 +14,8 @@ public class FakeClient {
 		OutputStream outToServer = client.getOutputStream();
 		DataOutputStream out = new DataOutputStream(outToServer);
 
-		out.writeUTF(client.getRemoteSocketAddress().toString());
+		//out.writeUTF(client.getRemoteSocketAddress().toString());
+		out.writeUTF("GET / HTTP/1.1 " + client.getRemoteSocketAddress().toString());
 	}
 
 
