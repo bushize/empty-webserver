@@ -25,4 +25,7 @@ public class FileSystem {
 		return files;
 	}
 
+    public boolean isHidden() {
+        return false;
+    }
 }

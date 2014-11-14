@@ -33,7 +33,7 @@ public class FileSystemTest {
 	
 	@Test
 	public void shouldNotReturnHiddenFile() throws Exception {
-		
+		assertEquals(false, dir.isHidden());
 	}
 
 }
