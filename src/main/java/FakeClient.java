@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class FakeClient {
 	
@@ -11,25 +12,29 @@ public class FakeClient {
 
 	public void send200Response() throws IOException {
 
-		OutputStream outToServer = client.getOutputStream();
-		DataOutputStream out = new DataOutputStream(outToServer);
-		out.writeUTF("GET / HTTP/1.1 " + client.getRemoteSocketAddress().toString());
+		PrintWriter out = new PrintWriter(client.getOutputStream(), true);
+
+        String requestStr = "GET / HTTP/1.1\r\n";
+
+        InputStream inStream = new ByteArrayInputStream(requestStr.getBytes(StandardCharsets.UTF_8));
+
+        BufferedReader input = new BufferedReader(new InputStreamReader(inStream));
+
+        out.println(input.readLine());
 	}
 
 	public void send404Response() throws IOException {
 
-		PrintWriter out = new PrintWriter(new BufferedWriter (new OutputStreamWriter(client.getOutputStream())),true);
-		out.write("GET /foo HTTP/1.1 " + client.getRemoteSocketAddress().toString());
+		PrintWriter out = new PrintWriter(client.getOutputStream(), true);
 
-		System.out.println(out.toString());
+        String requestStr = "GET /foo HTTP/1.1\r\n";
 
-		//OutputStream outToServer = client.getOutputStream();
-		//OutputStreamWriter out = new OutputStreamWriter(outToServer);
-		//DataOutputStream out = new DataOutputStream(outToServer);
-		//out.writeUTF("GET /foo HTTP/1.1 " + client.getRemoteSocketAddress().toString());
-		//out.writeChars("GET /foo HTTP/1.1 " + client.getRemoteSocketAddress().toString());
-		//out.writeUTF("Test /");
-		//out.write("GET /foo HTTP/1.1 " + client.getRemoteSocketAddress().toString());
+        InputStream inStream = new ByteArrayInputStream(requestStr.getBytes(StandardCharsets.UTF_8));
+
+        BufferedReader input = new BufferedReader(new InputStreamReader(inStream));
+
+        out.println(input.readLine());
+
 	}
 
 	public void closeConnection() throws IOException {
