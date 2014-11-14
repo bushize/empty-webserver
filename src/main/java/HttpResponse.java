@@ -15,7 +15,7 @@ public class HttpResponse {
     }
 
     public void generateResponse(String httpMethod, String url) {
-        System.out.println(url);
+        //System.out.println(url);
 
         if (httpMethod.equals("GET")) {
             if(url.contains("logs")) {

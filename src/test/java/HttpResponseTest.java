@@ -53,4 +53,19 @@ public class HttpResponseTest {
 		assertEquals(response, httpResponse.getResponse());
 	}
 
+    @Test
+    public void returnStatus404IfNotFound() {
+        httpResponse.generateResponse("GET", "/404");
+
+        assertEquals(404, httpResponse.getStatusCode());
+    }
+
+
+    @Test
+    public void returnStatus200IfNotFound() {
+        httpResponse.generateResponse("GET", "/");
+
+        assertEquals(200, httpResponse.getStatusCode());
+    }
+
 }
