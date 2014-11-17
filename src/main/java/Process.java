@@ -22,7 +22,7 @@ public class Process extends Thread {
 			responseGenerator = new ResponseGenerator(socketListener.getRequest());
 			
 			responseWriter = new ResponseWriter(socket);	
-			responseWriter.writeHeaders(responseGenerator.getGeneratedResponse());
+			responseWriter.writeHeaders(responseGenerator.getHeaders());
 			//responseWriter.writeContent();
 			
 			socket.close();

@@ -12,7 +12,7 @@ public class ResponseGenerator {
 		this.requestObject = requestObject;
 	}
 
-	public String getGeneratedResponse() {
+	public String getHeaders() {
 				
 		if (requestObject.getMethod().equals("GET"))
 			get();
