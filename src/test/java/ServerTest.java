@@ -7,7 +7,7 @@ import org.junit.Test;
 
 
 public class ServerTest {
-
+/*
 	private ServerSocket serverSocket;
 	private final int PORT = 5000;
 	private FakeClient fc;
@@ -34,5 +34,5 @@ public class ServerTest {
         assertTrue(process.isAlive());
 
 	}
-
+*/
 }
