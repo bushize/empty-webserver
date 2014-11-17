@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class FakeClient {
 	
@@ -9,15 +10,32 @@ public class FakeClient {
 		this.client = socket;
 	}
 
-	public void sendHandShake() throws IOException {
+	public void send200Response() throws IOException {
 
-		OutputStream outToServer = client.getOutputStream();
-		DataOutputStream out = new DataOutputStream(outToServer);
+		PrintWriter out = new PrintWriter(client.getOutputStream(), true);
 
-		//out.writeUTF(client.getRemoteSocketAddress().toString());
-		out.writeUTF("GET / HTTP/1.1 " + client.getRemoteSocketAddress().toString());
+        String requestStr = "GET / HTTP/1.1\r\n";
+
+        InputStream inStream = new ByteArrayInputStream(requestStr.getBytes(StandardCharsets.UTF_8));
+
+        BufferedReader input = new BufferedReader(new InputStreamReader(inStream));
+
+        out.println(input.readLine());
 	}
 
+	public void send404Response() throws IOException {
+
+		PrintWriter out = new PrintWriter(client.getOutputStream(), true);
+
+        String requestStr = "GET /foo HTTP/1.1\r\n";
+
+        InputStream inStream = new ByteArrayInputStream(requestStr.getBytes(StandardCharsets.UTF_8));
+
+        BufferedReader input = new BufferedReader(new InputStreamReader(inStream));
+
+        out.println(input.readLine());
+
+	}
 
 	public void closeConnection() throws IOException {
 		this.client.close();
