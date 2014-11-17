@@ -7,6 +7,7 @@ public class HttpResponse {
     private String response;
     private int statusCode;
     private String header = "";
+    private static String postData;
     public HashMap<Integer, String> statusMap = new HashMap<Integer, String>();
 
     public HttpResponse() {
@@ -15,10 +16,15 @@ public class HttpResponse {
         statusMap.put(200, "OK");
     }
 
-    public void generateResponse(String httpMethod, String url) {
+    public void generateResponse(String httpMethod, String url, String parameters) {
         //System.out.println(url);
+        String responseBody = "";
+        this.postData = parameters;
 
         if (httpMethod.equals("GET")) {
+            if(url.contains("forms")) {
+                responseBody += this.postData;
+            }
             if(url.contains("logs")) {
                 statusCode = 401;
 
@@ -27,7 +33,9 @@ public class HttpResponse {
             } else {
                 statusCode = 404;
             }
-        } else if (httpMethod.equals("POST") || httpMethod.equals("PUT")
+        } else if (httpMethod.equals("POST")) {
+            statusCode = 200;
+        } else if(httpMethod.equals("PUT")
                 || httpMethod.equals("DELETE")) {
             statusCode = 200;
         } else if(httpMethod.equals("OPTIONS")) {
@@ -38,7 +46,7 @@ public class HttpResponse {
         }
 
         String statusText = statusMap.get(statusCode);
-        String responseBody = "<h1>" + statusCode + " " + statusText + "</h1>";
+        responseBody += "<h1>" + statusCode + " " + statusText + "</h1>";
         String responseHeaderStatus = "HTTP/1.1 " + statusCode + " " + statusText + "\r\n";
 
         int contentLength = responseBody.length();
