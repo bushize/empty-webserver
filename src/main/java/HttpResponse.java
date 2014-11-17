@@ -6,6 +6,7 @@ public class HttpResponse {
 
     private String response;
     private int statusCode;
+    private String header = "";
     public HashMap<Integer, String> statusMap = new HashMap<Integer, String>();
 
     public HttpResponse() {
@@ -31,6 +32,7 @@ public class HttpResponse {
             statusCode = 200;
         } else if(httpMethod.equals("OPTIONS")) {
             statusCode = 200;
+            header += "ALLOW: GET,HEAD,POST,OPTIONS,PUT\r\n";
         } else {
             statusCode = 200;
         }
@@ -43,6 +45,7 @@ public class HttpResponse {
 
         this.response = responseHeaderStatus +
                 "Content-Length: " + contentLength + "\r\n" +
+                header +
                 "Content-Type: text/html\r\n\r\n" +
                 responseBody;
     }
