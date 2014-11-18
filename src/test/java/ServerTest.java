@@ -2,37 +2,34 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 
 public class ServerTest {
-/*
-	private ServerSocket serverSocket;
+
+	private final String ServerRoot = "/c/training/cob_spec/public";
 	private final int PORT = 5000;
 	private FakeClient fc;
+	private Server s;
 	
 	@Before
 	public void setUp() throws IOException {
-		serverSocket = new ServerSocket(PORT);
+		s = new Server(PORT, ServerRoot);		
+		fc = new FakeClient(new Socket("localhost", 5000));
 	}
-
 
 	@Test
 	public void ServerStarts() throws IOException {
-
-        //client   
-        fc = new FakeClient(new Socket("localhost", 5000));
+		s.begin();        
         fc.send200Response();
-        
-		//server
-		Socket socket = serverSocket.accept();
-        Thread process = new Process(socket, "/c/training/cob_spec/public");
-        process.start();
-
-        fc.closeConnection();
-        assertTrue(process.isAlive());
-
+        assertTrue(s.ServerHealthCheck());
 	}
-*/
+
+	@After
+	public void TearDown() throws IOException {
+		s.close();
+	}
 }
