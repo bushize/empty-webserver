@@ -19,9 +19,7 @@ public class Server {
 		try {			
 			Socket socket = ss.accept();
 	        process = new Process(socket, directory);
-	        process.start();	
-	        
-	        //ss.close();
+	        process.start();		        	     
 		}
 		catch (Exception e) {			
 			System.out.println("Error: " + e.getMessage());
@@ -46,7 +44,7 @@ public class Server {
 		return process.isAlive();
 	}
 
-	public void Close() throws IOException {
+	public void close() throws IOException {
 		ss.close();
 	}
 

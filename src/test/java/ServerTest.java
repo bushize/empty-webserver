@@ -10,38 +10,26 @@ import org.junit.Test;
 
 public class ServerTest {
 
-	private ServerSocket serverSocket;
+	private final String ServerRoot = "/c/training/cob_spec/public";
 	private final int PORT = 5000;
 	private FakeClient fc;
-	private Socket ClientSocket;
 	private Server s;
-	private String ServerRoot = "/c/training/cob_spec/public";
 	
 	@Before
 	public void setUp() throws IOException {
-		serverSocket = new ServerSocket(PORT);
-		ClientSocket = new Socket("localhost", 5000);
-		fc = new FakeClient(ClientSocket);
+		s = new Server(PORT, ServerRoot);		
+		fc = new FakeClient(new Socket("localhost", 5000));
 	}
 
 	@Test
 	public void ServerStarts() throws IOException {
-
-        //client
+		s.begin();        
         fc.send200Response();
-        
-		//server
-		s = new Server(PORT,ServerRoot);
-		s.begin();
-		//ClientSocket = serverSocket.accept();
-		//Thread process = new Process(ClientSocket, "/c/training/cob_spec/public");
-		//process.start();
-
         assertTrue(s.ServerHealthCheck());
 	}
 
 	@After
 	public void TearDown() throws IOException {
-		s.Close();
+		s.close();
 	}
 }
