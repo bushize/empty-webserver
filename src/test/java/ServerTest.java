@@ -18,7 +18,6 @@ public class ServerTest {
 	@Before
 	public void setUp() throws IOException {
 		s = new Server(PORT, ServerRoot);		
-		fc = new FakeClient(new Socket("localhost", 5000));
 		ClientSocket = new Socket("localhost", 5000);
 		s.setClientSocket(ClientSocket);
 		fc = new FakeClient(ClientSocket);
