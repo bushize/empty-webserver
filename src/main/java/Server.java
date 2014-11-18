@@ -8,7 +8,8 @@ public class Server {
 	private int port;
 	private ServerSocket ss;
 	private Thread process;
-	
+	private Socket socket;
+
 	public Server(int port, String directory) throws IOException {
 		this.port = port;
 		this.directory = directory;
@@ -16,8 +17,8 @@ public class Server {
 	}
 	
 	public void begin() throws IOException {
-		try {			
-			Socket socket = ss.accept();
+		try {
+			this.socket = ss.accept();
 	        process = new Process(socket, directory);
 	        process.start();		        	     
 		}
@@ -36,6 +37,11 @@ public class Server {
 	public int getPort() {
 		return port;
 	}
+
+	public void setClientSocket(Socket Client){
+		this.socket = Client;
+	}
+
 
 	public String ServerStatus(){
 		return process.getState().toString();
