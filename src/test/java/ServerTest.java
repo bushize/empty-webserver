@@ -13,13 +13,15 @@ public class ServerTest {
 	private ServerSocket serverSocket;
 	private final int PORT = 5000;
 	private FakeClient fc;
-	private Socket clientsocket;
+	private Socket ClientSocket;
+	private Server s;
+	private String ServerRoot = "/c/training/cob_spec/public";
 	
 	@Before
 	public void setUp() throws IOException {
 		serverSocket = new ServerSocket(PORT);
-		clientsocket = new Socket("localhost", 5000);
-		fc = new FakeClient(clientsocket);
+		ClientSocket = new Socket("localhost", 5000);
+		fc = new FakeClient(ClientSocket);
 	}
 
 	@Test
@@ -29,15 +31,17 @@ public class ServerTest {
         fc.send200Response();
         
 		//server
-		clientsocket = serverSocket.accept();
-		Thread process = new Process(clientsocket, "/c/training/cob_spec/public");
-		process.start();
+		s = new Server(PORT,ServerRoot);
+		s.begin();
+		//ClientSocket = serverSocket.accept();
+		//Thread process = new Process(ClientSocket, "/c/training/cob_spec/public");
+		//process.start();
 
-        assertTrue(process.isAlive());
+        assertTrue(s.ServerHealthCheck());
 	}
 
 	@After
 	public void TearDown() throws IOException {
-		serverSocket.close();
+		s.Close();
 	}
 }

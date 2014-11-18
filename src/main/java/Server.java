@@ -7,6 +7,7 @@ public class Server {
 	private String directory;
 	private int port;
 	private ServerSocket ss;
+	private Thread process;
 	
 	public Server(int port, String directory) throws IOException {
 		this.port = port;
@@ -17,10 +18,10 @@ public class Server {
 	public void begin() throws IOException {
 		try {			
 			Socket socket = ss.accept();
-	        Thread process = new Process(socket, directory);
+	        process = new Process(socket, directory);
 	        process.start();	
 	        
-	        ss.close();
+	        //ss.close();
 		}
 		catch (Exception e) {			
 			System.out.println("Error: " + e.getMessage());
@@ -36,7 +37,19 @@ public class Server {
 	public int getPort() {
 		return port;
 	}
-	
+
+	public String ServerStatus(){
+		return process.getState().toString();
+	}
+
+	public Boolean ServerHealthCheck(){
+		return process.isAlive();
+	}
+
+	public void Close() throws IOException {
+		ss.close();
+	}
+
 	public static void main(String[] args) throws IOException {
 		while (true) {
 			Server s = new Server(Integer.parseInt(args[1]), args[3]);		
