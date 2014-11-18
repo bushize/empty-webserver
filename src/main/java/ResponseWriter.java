@@ -22,11 +22,9 @@ public class ResponseWriter {
 	}
 	
 	public void writeContent(byte[] arr) throws IOException {
-		PrintStream out = new PrintStream(new BufferedOutputStream(socket.getOutputStream()));
-		
-		for (int i = 0; i < arr.length; i++) {
-			out.write(arr[i]);
-		}
+		out = new PrintStream(new BufferedOutputStream(socket.getOutputStream()));		
+		out.write(arr, 0 , arr.length);
+		out.flush();		
 	}
 	
 	public void closeStream() {
