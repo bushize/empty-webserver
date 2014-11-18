@@ -26,6 +26,7 @@ public class ServerTest {
 		s.begin();        
         fc.send200Response();
         assertTrue(s.ServerHealthCheck());
+		assertEquals("RUNNABLE",s.ServerStatus());
 	}
 
 	@After

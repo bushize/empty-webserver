@@ -19,11 +19,13 @@ public class Server {
 		try {			
 			Socket socket = ss.accept();
 	        process = new Process(socket, directory);
-	        process.start();		        	     
+	        process.start();		
+	        ss.close();
 		}
 		catch (Exception e) {			
 			System.out.println("Error: " + e.getMessage());
 			e.printStackTrace();
+			Thread.currentThread().interrupt();
 	
 		}		
 	}
@@ -46,6 +48,7 @@ public class Server {
 
 	public void close() throws IOException {
 		ss.close();
+		Thread.currentThread().interrupt();
 	}
 
 	public static void main(String[] args) throws IOException {

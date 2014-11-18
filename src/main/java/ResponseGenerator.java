@@ -64,10 +64,7 @@ public class ResponseGenerator {
 			statusCode = "200";
 			statusText = "OK";
 		}
-		else {
-			
-			System.out.println("GET FAILED>>>");
-			
+		else {					
 			statusCode = "404";
 			statusText = "Not Found";
 		}		
@@ -102,7 +99,6 @@ public class ResponseGenerator {
 		}
 		else if (f.exists() && f.isDirectory()) {
 			isDirectory = true;
-			System.out.println("DIRECTORY EXIST");
 			return true;
 		}
 		else 
