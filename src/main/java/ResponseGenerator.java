@@ -53,7 +53,7 @@ public class ResponseGenerator {
 		return statusCode;
 	}
 	
-	public boolean checkIfDirectory() {
+	public boolean isDirectory() {
 		return isDirectory;
 	}
 	
