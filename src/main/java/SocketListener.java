@@ -9,9 +9,11 @@ public class SocketListener {
 	
 	private Socket socket;
 	private String socketInput;
+	private String directory;
 	
-	public SocketListener(Socket socket) {
+	public SocketListener(Socket socket, String directory) {
 		this.socket = socket;
+		this.directory = directory;
 	}
 
 	public void listen() throws IOException {
@@ -25,8 +27,7 @@ public class SocketListener {
 		StringTokenizer tokenizedLine = new StringTokenizer(socketInput);
 		String httpMethod = tokenizedLine.nextToken();
 		String path = tokenizedLine.nextToken();
-		
-		RequestObject ro = new RequestObject(httpMethod, path);
+		RequestObject ro = new RequestObject(httpMethod, path, directory);
 		
 		return ro;
 	}

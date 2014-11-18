@@ -2,10 +2,12 @@
 public class RequestObject {
 	private String method;
 	private String path;
+	private String directory;
 	
-	public RequestObject(String method, String path) {
+	public RequestObject(String method, String path, String directory) {
 		this.method = method;
 		this.path = path;
+		this.directory = directory;
 	}
 	
 	public void setMethod(String method) {
@@ -22,5 +24,13 @@ public class RequestObject {
 	
 	public String getPath() {
 		return path;
+	}
+	
+	public void setDirectory(String directory) {
+		this.directory = directory;
+	}
+	
+	public String getDirectory() {
+		return directory;
 	}
 }

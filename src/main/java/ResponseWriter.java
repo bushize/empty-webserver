@@ -15,13 +15,16 @@ public class ResponseWriter {
 	public void writeHeaders(String response) throws IOException {
 		PrintStream out = new PrintStream(new BufferedOutputStream(socket.getOutputStream()));
 		
-		System.out.println(response);
+		System.out.println(response + "\n");
 		
 		out.print(response);
-		out.close();
 	}
 	
-	public void writeContent(byte[] arr) {
+	public void writeContent(byte[] arr) throws IOException {
+		PrintStream out = new PrintStream(new BufferedOutputStream(socket.getOutputStream()));
 		
+		for (int i = 0; i < arr.length; i++) {
+			out.write(arr[i]);
+		}
 	}
 }

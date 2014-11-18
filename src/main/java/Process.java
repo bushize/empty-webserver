@@ -6,24 +6,25 @@ public class Process extends Thread {
 	private SocketListener socketListener;
 	private ResponseGenerator responseGenerator;
 	private ResponseWriter responseWriter;
-	private String path;
+	private String directory;
 	
-	public Process(Socket socket, String path){
+	public Process(Socket socket, String directory){
 		this.socket = socket;
-		this.path = path;
+		this.directory = directory;
 	}
 	
 	public void run() {		
 		try 
 		{		
-			socketListener = new SocketListener(socket);	
+			socketListener = new SocketListener(socket, directory);	
 			socketListener.listen();
 			
 			responseGenerator = new ResponseGenerator(socketListener.getRequest());
 			
 			responseWriter = new ResponseWriter(socket);	
 			responseWriter.writeHeaders(responseGenerator.getHeaders());
-			//responseWriter.writeContent();
+			if (responseGenerator.getStatusCode().equals("200") && !responseGenerator.checkIfDirectory())
+				responseWriter.writeContent(responseGenerator.getContent());
 			
 			socket.close();
 		}
