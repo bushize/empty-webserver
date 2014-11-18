@@ -8,11 +8,17 @@ public class RequestHandler {
 	private int responseStatusCode;
 	HttpResponse httpResponse;
 	HttpRequest httpRequest;
+	private String lastPostData;
+	private boolean isAuthorized;
 
 	public RequestHandler(HttpRequest r) {
 		requestMethod = r.method();
 		server = r.getServer();
 		httpRequest = r;
+		lastPostData = server.getLastPostData();
+		this.isAuthorized = r.isAuthorized();
+		System.out.println("isAuthed:" + isAuthorized);
+		//System.out.println("lastPostData in httpRequestHandler: " + lastPostData);
 		requestUrl = parseUrl(r.getUrl());
 		process();
 	}
@@ -28,7 +34,7 @@ public class RequestHandler {
 	}
 
 	private void process() {
-		httpResponse = new HttpResponse(requestMethod, requestUrl);
+		httpResponse = new HttpResponse(requestMethod, requestUrl, lastPostData, isAuthorized);
 		this.response = httpResponse.getResponse();
 		this.responseStatusCode = httpResponse.getStatusCode();
 	}
@@ -51,6 +57,10 @@ public class RequestHandler {
 
 	public String getResponse() {
 		return this.response;
+	}
+	
+	public String getLastPostData() {
+		return this.lastPostData;
 	}
 
 }

@@ -10,6 +10,8 @@ public class RealHttpRequest implements HttpRequest {
 	private String url;
 	private String requestMethod;
 	private int responseStatusCode;
+	private String parameters;
+	private boolean authorized = false;
 
 	public RealHttpRequest(HttpServer server, Socket client) throws IOException {
 		this.server = server;
@@ -25,7 +27,9 @@ public class RealHttpRequest implements HttpRequest {
 		BufferedReader in;
 		in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 		String request = in.readLine();
-
+		
+		Logger logger = server.getLogger();
+		logger.log(request);
 		// System.out.println("Server recieved request from client: " +
 		// request);
 		if (request == null || request.trim().length() == 0)
@@ -36,8 +40,44 @@ public class RealHttpRequest implements HttpRequest {
 		this.requestMethod = tokenizedLine.nextToken();
 
 		String path = tokenizedLine.nextToken();
-		// String body = tokenizedLine.nextToken();
+		//String httpVersion = tokenizedLine.nextToken();
+		
+		int contentLength = 0;
+		String header = request;
+		String line;
+//		while((line = in.readLine()) != null) {
+//			System.out.println(line);
+//		}
+        while (!(line = in.readLine()).equals("")) {
+            header += "\n" + line;
+            if(requestMethod.startsWith("GET") && line.contains("Authorization: Basic")) {
+            	this.authorized = true;
+            }
+            if (requestMethod.startsWith("POST") || requestMethod.startsWith("PUT")) {
+                final String contentHeader = "Content-Length: ";
+                if (line.startsWith(contentHeader)) {
+                    contentLength = Integer.parseInt(line.substring(contentHeader.length()));
+                }
+            }
+        }
 
+        if(requestMethod.startsWith("POST") || requestMethod.startsWith("PUT")) {
+            StringBuilder body = new StringBuilder();
+            int c = 0;
+            for (int i = 0; i < contentLength; i++) {
+                c = in.read();
+                body.append((char) c);
+            }
+            header += " " + body.toString();
+            this.parameters = body.toString();
+        }
+        //Authorization
+        System.out.println(header + "\r\nEND REQUEST\r\n");
+        
+        if(requestMethod.startsWith("DELETE")) {
+        	server.updateLastPostData(null);
+        }
+        
 		this.url = path;
 	}
 
@@ -56,5 +96,13 @@ public class RealHttpRequest implements HttpRequest {
 	@Override
 	public HttpServer getServer() {
 		return this.server;
+	}
+	
+	public String getParameters() {
+		return this.parameters;
+	}
+	
+	public boolean isAuthorized() {
+		return this.authorized;
 	}
 }

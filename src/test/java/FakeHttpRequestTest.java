@@ -14,21 +14,11 @@ public class FakeHttpRequestTest {
 	
 	@Before
 	public void SetUp() throws IOException {
-		(new Thread(){
-			public void run() {
-				if(server == null) {
-					try {
-						server = new SocketHttpServer(5000);
-						server.start();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}).start();
-
+		if(server == null)
+			server = new SocketHttpServer(0);
 		 request = new FakeHttpRequest(server);
-		 request.connect("127.0.0.1", 5000);
+		 int port = server.getLocalPort();
+		 request.connect("127.0.0.1", port);
 	}
 	
 	@Test
@@ -41,5 +31,27 @@ public class FakeHttpRequestTest {
 	public void setPath() throws Exception {
 		request.setPath("/");
 		assertEquals("/", request.getUrl());
+	}
+	
+	@Test
+	public void setData() throws Exception {
+		request.setParameters("My=data");
+		assertEquals("My=data", request.getPamameters());
+	}
+	
+	@Test
+	public void deleteData() throws Exception {
+		request.setParameters("My=data");
+		assertEquals("My=data", request.getPamameters());
+		request.deleteParameters("My=data");
+		assertEquals(null, request.getPamameters());
+	}
+	
+	@Test
+	public void getLogs() throws Exception {
+		request.setMethod("GET");
+		request.setPath("/");
+		Logger logger = server.getLogger();
+		assertEquals(true, logger.getLogs().contains("GET / HTTP/1.1"));
 	}
 }

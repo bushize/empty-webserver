@@ -16,6 +16,8 @@ public class FakeHttpRequest implements HttpRequest {
 	private HttpServer server;
 	private String response;
 	private String method;
+	private String parameters;
+	private boolean isAuthorized;
 	
 	public FakeHttpRequest(HttpServer server) throws IOException {
 		this.server = server;
@@ -30,6 +32,9 @@ public class FakeHttpRequest implements HttpRequest {
 	public void fireRequest() throws IOException {
 		PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
         String requestStr = this.method + " " + this.path + " HTTP/1.1\r\n";
+        if(this.parameters != null) {
+        	requestStr += this.parameters;
+        }
         InputStream inStream = new ByteArrayInputStream(requestStr.getBytes(StandardCharsets.UTF_8));
         BufferedReader input = new BufferedReader(new InputStreamReader(inStream));
         out.println(input.readLine());
@@ -38,26 +43,9 @@ public class FakeHttpRequest implements HttpRequest {
 	}
 
 	public String getResponse() throws IOException {
-		/*
-        BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-        String response = "";
-        String input;
-        while((input = in.readLine()) != null) {
-        	response += input;
-        }
-        */
 		return this.response;
 	}
-/*
-	public void generateResponse() throws IOException {
-		RealHttpRequest request = new RealHttpRequest(server, this);
-		request.request();
-		
-		HttpResponse httpResponse = request.getResponse();
-		this.response = httpResponse.getResponse(request.getRequestMethod(), request.getUrl());
-		this.statusCode = httpResponse.getStatusCode();
-	}
-*/
+
 	public void setPath(String path) {
 		this.path = path;
 	}
@@ -79,6 +67,23 @@ public class FakeHttpRequest implements HttpRequest {
 	@Override
 	public HttpServer getServer() {
 		return this.server;
+	}
+
+	public void setParameters(String data) {
+		this.parameters = data;
+	}
+	
+	public String getPamameters() {
+		return this.parameters;
+	}
+
+	public void deleteParameters(String string) {
+		this.parameters = null;
+	}
+
+	@Override
+	public boolean isAuthorized() {
+		return this.isAuthorized;
 	}
 
 }

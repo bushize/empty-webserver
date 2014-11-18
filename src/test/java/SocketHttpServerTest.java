@@ -32,4 +32,10 @@ public class SocketHttpServerTest {
 	public void getListeningPort() throws Exception {
 		assertNotEquals(0, server.getLocalPort());
 	}
+	
+	@Test
+	public void updateLastPostData() throws Exception {
+		server.updateLastPostData(null);
+		assertEquals(null, server.getLastPostData());
+	}
 }
