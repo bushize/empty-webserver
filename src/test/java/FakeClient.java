@@ -37,6 +37,20 @@ public class FakeClient {
 
 	}
 
+	public void sendPOSTRequest() throws IOException {
+
+		PrintWriter out = new PrintWriter(client.getOutputStream(), true);
+
+		String requestStr = "GET /foo HTTP/1.1\r\na=b";
+
+		InputStream inStream = new ByteArrayInputStream(requestStr.getBytes(StandardCharsets.UTF_8));
+
+		BufferedReader input = new BufferedReader(new InputStreamReader(inStream));
+
+		out.println(input.readLine());
+
+	}
+
 	public void closeConnection() throws IOException {
 		this.client.close();
 	}

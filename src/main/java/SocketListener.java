@@ -9,11 +9,11 @@ public class SocketListener {
 	
 	private Socket socket;
 	private String socketInput;
-	private String directory;
+	private String ServerRoot;
 	
-	public SocketListener(Socket socket, String directory) {
+	public SocketListener(Socket socket, String ServerRoot) {
 		this.socket = socket;
-		this.directory = directory;
+		this.ServerRoot = ServerRoot;
 	}
 
 	public void listen() throws IOException {
@@ -27,7 +27,7 @@ public class SocketListener {
 		StringTokenizer tokenizedLine = new StringTokenizer(socketInput);
 		String httpMethod = tokenizedLine.nextToken();
 		String path = tokenizedLine.nextToken();
-		RequestObject ro = new RequestObject(httpMethod, path, directory);
+		RequestObject ro = new RequestObject(httpMethod, path, ServerRoot);
 		
 		return ro;
 	}
