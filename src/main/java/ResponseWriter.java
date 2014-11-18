@@ -19,7 +19,6 @@ public class ResponseWriter {
 		System.out.println(response + "\n");
 		
 		out.print(response);
-		//out.close();
 	}
 	
 	public void writeContent(byte[] arr) throws IOException {
