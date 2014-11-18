@@ -20,7 +20,8 @@ public class Server {
 		try {
 			this.socket = ss.accept();
 	        process = new Process(socket, directory);
-	        process.start();		        	     
+	        process.start();		
+	        ss.close();
 		}
 		catch (Exception e) {			
 			System.out.println("Error: " + e.getMessage());
