@@ -33,7 +33,7 @@ public class ServerTest {
 
 	@Test
 	public void ReturnServerPath() throws Exception {
-		assertEquals(ServerRoot,s.getServerDirectory());
+		assertEquals(ServerRoot,Server.ServerDirectory);
 	}
 
 	@Test

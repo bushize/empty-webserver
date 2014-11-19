@@ -28,7 +28,7 @@ public class SocketListenerTest {
            	
         fc.send200Response();
         Socket s = ss.accept();       
-        sl = new SocketListener(s, ServerRoot);        
+        sl = new SocketListener(s);
         sl.listen();
 
         assertEquals("GET / HTTP/1.1", sl.getSocketInput());            
@@ -39,7 +39,7 @@ public class SocketListenerTest {
         
         fc.send200Response();
         Socket s = ss.accept();    
-        sl = new SocketListener(s, ServerRoot);
+        sl = new SocketListener(s);
         sl.listen();
 
         assertEquals("GET", sl.getRequest().getMethod());

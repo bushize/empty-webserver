@@ -4,7 +4,7 @@ import java.net.Socket;
 
 public class Server {
 	
-	private String directory;
+	public static String ServerDirectory;
 	private int port;
 	private ServerSocket ss;
 	private Thread process;
@@ -12,14 +12,14 @@ public class Server {
 
 	public Server(int port, String directory) throws IOException {
 		this.port = port;
-		this.directory = directory;
+		ServerDirectory = directory;
 		this.ss = new ServerSocket(port);
 	}
 	
 	public void begin() throws IOException {
 		try {
 			this.socket = ss.accept();
-	        process = new Process(socket, directory);
+	        process = new Process(socket);
 	        process.start();		
 	        ss.close();
 		}
@@ -29,10 +29,6 @@ public class Server {
 			Thread.currentThread().interrupt();
 	
 		}		
-	}
-	
-	public String getServerDirectory() {
-		return directory;
 	}
 	
 	public int getPort() {
