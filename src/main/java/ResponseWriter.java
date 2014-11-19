@@ -5,11 +5,9 @@ import java.net.Socket;
 public class ResponseWriter {
 	
 	private Socket socket;	
-	PrintStream out;
 	
 	public ResponseWriter(Socket socket) throws IOException {
 		this.socket = socket;
-		out = new PrintStream(new BufferedOutputStream(socket.getOutputStream()));
 	}
 	
 	public void writeHeaders(String response) throws IOException {
@@ -22,9 +20,5 @@ public class ResponseWriter {
 		OutputStream outputStream = socket.getOutputStream();
 		outputStream.write(arr);
 		outputStream.flush();
-	}
-	
-	public void closeStream() {
-		out.close();
 	}
 }
