@@ -9,7 +9,6 @@ public class SocketListener {
 	
 	private Socket socket;
 	private String socketInput;
-	private String ServerRoot;
 	
 	public SocketListener(Socket socket) {
 		this.socket = socket;
@@ -26,7 +25,7 @@ public class SocketListener {
 		StringTokenizer tokenizedLine = new StringTokenizer(socketInput);
 		String httpMethod = tokenizedLine.nextToken();
 		String path = tokenizedLine.nextToken();
-		RequestObject ro = new RequestObject(httpMethod, path, Server.ServerDirectory);
+		RequestObject ro = new RequestObject(httpMethod, path);
 		
 		return ro;
 	}
