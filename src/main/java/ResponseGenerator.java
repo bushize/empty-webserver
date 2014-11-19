@@ -39,7 +39,7 @@ public class ResponseGenerator {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		byte[] content = new byte [4096];
 		int i = 0;
-		InputStream inputStream = new FileInputStream(directory + requestObject.getPath());
+		InputStream inputStream = new FileInputStream(directory + requestObject.getFile());
 		
 		while ( (i = inputStream.read(content) ) > 0 ) {
 			bos.write(content, 0 ,i);
@@ -77,7 +77,7 @@ public class ResponseGenerator {
 	
 	private boolean checkFile() {
 		
-		String fileName = directory + requestObject.getPath();
+		String fileName = directory + requestObject.getFile();
 	
         //if (!fileName.startsWith("/"))
         //   fileName = "/" + fileName;

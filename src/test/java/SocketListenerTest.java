@@ -43,7 +43,7 @@ public class SocketListenerTest {
         sl.listen();
 
         assertEquals("GET", sl.getRequest().getMethod());
-        assertEquals("/", sl.getRequest().getPath());
+        assertEquals("/", sl.getRequest().getFile());
     }
 
     @After
