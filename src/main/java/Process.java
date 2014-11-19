@@ -23,7 +23,7 @@ public class Process extends Thread {
 			
 			responseWriter = new ResponseWriter(socket);	
 			responseWriter.writeHeaders(responseGenerator.getHeaders());
-			if (responseGenerator.getStatusCode().equals("200") && !responseGenerator.isDirectory())
+			if (responseGenerator.getStatusCode() == 200 && !responseGenerator.isDirectory())
 				responseWriter.writeContent(responseGenerator.getContent());
 			responseWriter.closeStream();
 			

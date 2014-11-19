@@ -1,11 +1,19 @@
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+import org.junit.Before;
 import org.junit.Test;
 
 
 public class RequestObjectTest {
 	
 	private final String DIRECTORY = "/Users/johnuba/Sample/java/cob_spec/public";
+    RequestObject request;
+
+    @Before
+    public void setUp() {
+        request = new RequestObject();
+    }
 
 	@Test
 	public void MethodIsSet() {
@@ -43,4 +51,21 @@ public class RequestObjectTest {
 		assertNotEquals("asdasd", ro.getDirectory());
 	}
 
+    @Test
+    public void testSetPath() {
+        request.setPath("/");
+        assertEquals("/", request.getPath());
+    }
+
+    @Test
+    public void testSetMethod() {
+        request.setMethod("GET");
+        assertEquals("GET", request.getMethod());
+    }
+
+    @Test
+    public void testSetDirectory() {
+        request.setDirectory("/public");
+        assertEquals("/public", request.getDirectory());
+    }
 }

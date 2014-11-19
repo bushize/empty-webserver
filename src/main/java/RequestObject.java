@@ -8,8 +8,11 @@ public class RequestObject {
 		this.method = method;
 		this.path = path;
 		this.directory = directory;
+
+        System.out.println("method: " + method + " path: " + path);
 	}
-	
+
+    public RequestObject() {}
 	public void setMethod(String method) {
 		this.method = method;
 	}
