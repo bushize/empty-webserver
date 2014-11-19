@@ -29,7 +29,6 @@ public class ResponseGenerator {
 		String response = "";
 		response += String.format("HTTP/1.1 %d %s%n", statusCode, statusText);
 		response += String.format("Content-Type: %s%n", contentType);
-		//response += "<h1>" + statusCode + " " + statusText + "</h1>";
 			
 		return response;
 	}
@@ -58,6 +57,13 @@ public class ResponseGenerator {
 		return isDirectory;
 	}
 	
+	
+	
+	
+	
+	
+	
+	
 	/** HELPER METHODS **/
 	
 	private void get() {
@@ -78,10 +84,6 @@ public class ResponseGenerator {
 	private boolean checkFile() {
 		
 		String fileName = directory + requestObject.getFile();
-	
-        //if (!fileName.startsWith("/"))
-        //   fileName = "/" + fileName;
-        
 		File f = new File(fileName);
 		
 		if (f.exists() && !f.isDirectory() ) {

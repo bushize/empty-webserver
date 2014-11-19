@@ -51,4 +51,13 @@ public class ResponseGeneratorTest {
         generator.getHeaders();
         assertEquals(true, generator.isDirectory());
     }
+    
+    @Test
+    public void testIsNotDirectory() throws Exception {
+        requestObj.setMethod("GET");
+        requestObj.setFile("/image.jpeg");
+        generator = new ResponseGenerator(requestObj, DIRECTORY);
+        generator.getHeaders();
+        assertEquals(false, generator.isDirectory());
+    }    
 }
