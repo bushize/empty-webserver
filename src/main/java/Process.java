@@ -8,9 +8,9 @@ public class Process extends Thread {
 	private ResponseWriter responseWriter;
 	private String directory;
 	
-	public Process(Socket socket){
+	public Process(Socket socket, String directory){
 		this.socket = socket;
-		//this.directory = directory;
+		this.directory = directory;
 	}
 	
 	public void run() {		
@@ -19,13 +19,12 @@ public class Process extends Thread {
 			socketListener = new SocketListener(socket);
 			socketListener.listen();
 			
-			responseGenerator = new ResponseGenerator(socketListener.getRequest());
+			responseGenerator = new ResponseGenerator(socketListener.getRequest(), directory);
 			
 			responseWriter = new ResponseWriter(socket);	
 			responseWriter.writeHeaders(responseGenerator.getHeaders());
 			if (responseGenerator.getStatusCode() == 200 && !responseGenerator.isDirectory())
 				responseWriter.writeContent(responseGenerator.getContent());
-			responseWriter.closeStream();
 			
 			socket.close();
 		}

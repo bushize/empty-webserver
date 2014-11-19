@@ -10,24 +10,33 @@ public class ResponseGenerator {
 	private String statusText;
 	private String contentType;
 	private boolean isDirectory = false;
+	private String directory;
 	
 	private RequestObject requestObject;
 
-	public ResponseGenerator(RequestObject requestObject) {
+	public ResponseGenerator(RequestObject requestObject, String directory) {
 		this.requestObject = requestObject;
+		this.directory = directory;
 	}
 
-	public String getHeaders() {
+	public String getHeaders() throws IOException {
 				
 		if (requestObject.getMethod().equals("GET"))
 			get();
 		else if (requestObject.getMethod().equals("POST"))
 			post();
-					
+		else if (requestObject.getMethod().equals("PUT"))
+			put();
+		else if (requestObject.getMethod().equals("DELETE"))
+			delete();
+		else if (requestObject.getMethod().equals("OPTIONS"))
+			options();	
+		else
+			notAllowed();
+
 		String response = "";
-		response += "HTTP/1.1 " + statusCode + " " +  statusText + "\r\n";
-		response += "Content-Type: " + contentType + "\r\n\r\n";
-		response += "<h1>" + statusCode + " " + statusText + "</h1>";
+		response += String.format("HTTP/1.1 %d %s%n", statusCode, statusText);
+		response += String.format("Content-Type: %s%n", contentType);
 			
 		return response;
 	}
@@ -37,8 +46,7 @@ public class ResponseGenerator {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		byte[] content = new byte [4096];
 		int i = 0;
-		
-		InputStream inputStream = new FileInputStream(requestObject.getDirectory() + requestObject.getPath());
+		InputStream inputStream = new FileInputStream(directory + requestObject.getFile());
 		
 		while ( (i = inputStream.read(content) ) > 0 ) {
 			bos.write(content, 0 ,i);
@@ -57,6 +65,13 @@ public class ResponseGenerator {
 		return isDirectory;
 	}
 	
+	
+	
+	
+	
+	
+	
+	
 	/** HELPER METHODS **/
 	
 	private void get() {
@@ -74,13 +89,25 @@ public class ResponseGenerator {
 		
 	}
 	
+	private void put() {
+		
+	}
+	
+	private void delete() {
+		
+	}
+	
+	private void options() {
+		
+	}
+	
+	private void notAllowed() {
+		
+	}
+	
 	private boolean checkFile() {
 		
-		String fileName = requestObject.getDirectory() + requestObject.getPath();
-	
-        //if (!fileName.startsWith("/"))
-        //   fileName = "/" + fileName;
-        
+		String fileName = directory + requestObject.getFile();
 		File f = new File(fileName);
 		
 		if (f.exists() && !f.isDirectory() ) {

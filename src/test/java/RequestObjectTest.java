@@ -1,5 +1,4 @@
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,8 +6,7 @@ import org.junit.Test;
 
 public class RequestObjectTest {
 	
-	private final String DIRECTORY = "/Users/johnuba/Sample/java/cob_spec/public";
-    RequestObject request;
+    private RequestObject request;
 
     @Before
     public void setUp() {
@@ -17,44 +15,32 @@ public class RequestObjectTest {
 
 	@Test
 	public void MethodIsSet() {
-		RequestObject ro = new RequestObject("GET", "image.jpeg", DIRECTORY);
+		RequestObject ro = new RequestObject("GET", "image.jpeg");
 		assertEquals("GET", ro.getMethod());
 	}
 	
 	@Test
 	public void PathIsSet() {
-		RequestObject ro = new RequestObject("GET", "image.jpeg", DIRECTORY);
-		assertEquals("image.jpeg", ro.getPath());
-	}	
-	
-	@Test
-	public void DirectoryIsSet() {
-		RequestObject ro = new RequestObject("GET", "image.jpeg", DIRECTORY);
-		assertEquals(DIRECTORY, ro.getDirectory());
+		RequestObject ro = new RequestObject("GET", "image.jpeg");
+		assertEquals("image.jpeg", ro.getFile());
 	}	
 	
 	@Test
 	public void MethodIsWrong() {
-		RequestObject ro = new RequestObject("GET", "image.jpeg", DIRECTORY);
+		RequestObject ro = new RequestObject("GET", "image.jpeg");
 		assertNotEquals("image.jpeg", ro.getMethod());
 	}
 	
 	@Test
 	public void PathIsWrong() {
-		RequestObject ro = new RequestObject("GET", "image.jpeg", DIRECTORY);
-		assertNotEquals("awds", ro.getPath());
+		RequestObject ro = new RequestObject("GET", "image.jpeg");
+		assertNotEquals("awds", ro.getFile());
 	}
 	
-	@Test
-	public void DirectoryIsWrong() {
-		RequestObject ro = new RequestObject("GET", "image.jpeg", DIRECTORY);
-		assertNotEquals("asdasd", ro.getDirectory());
-	}
-
     @Test
     public void testSetPath() {
-        request.setPath("/");
-        assertEquals("/", request.getPath());
+        request.setFile("/");
+        assertEquals("/", request.getFile());
     }
 
     @Test
@@ -63,9 +49,4 @@ public class RequestObjectTest {
         assertEquals("GET", request.getMethod());
     }
 
-    @Test
-    public void testSetDirectory() {
-        request.setDirectory("/public");
-        assertEquals("/public", request.getDirectory());
-    }
 }
