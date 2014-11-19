@@ -11,7 +11,6 @@ import static org.junit.Assert.assertEquals;
 
 public class SocketListenerTest {
 
-    private final String ServerRoot = "c:/training/cob_spec/public";
     private final int PORT = 5000;
     private FakeClient fc;
     private SocketListener sl;
