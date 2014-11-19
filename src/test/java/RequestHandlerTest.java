@@ -2,21 +2,20 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 
 public class RequestHandlerTest {
 	
-	FakeHttpRequest r;
-	SocketHttpServer server;
+	static FakeHttpRequest r;
+	static SocketHttpServer server;
 	RequestHandler handler;
 	
-	@Before
-	public void SetUp() throws IOException {
-		if(server == null)
-			server = new SocketHttpServer(0);
+	@BeforeClass
+	public static void SetUp() throws IOException {
+		server = new SocketHttpServer(0);
 		r = new FakeHttpRequest(server);
 		r.connect("127.0.0.1", server.getLocalPort());
 		r.setPath(".");
@@ -78,8 +77,8 @@ public class RequestHandlerTest {
 		assertTrue(handler.getResponse().contains("200"));
 	}
 	
-	@After
-	public void cleanup() throws IOException {
+	@AfterClass
+	public static void tearDown() throws IOException {
 		server.close();
 	}
 

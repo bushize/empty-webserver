@@ -51,6 +51,7 @@ public class FakeHttpRequestTest {
 	public void getLogs() throws Exception {
 		request.setMethod("GET");
 		request.setPath("/");
+		request.fireRequest();
 		Logger logger = server.getLogger();
 		assertEquals(true, logger.getLogs().contains("GET / HTTP/1.1"));
 	}

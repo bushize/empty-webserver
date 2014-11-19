@@ -1,5 +1,6 @@
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import org.junit.Before;
@@ -10,6 +11,18 @@ public class HttpResponseTest {
 
 	HttpResponse httpResponse;
 	HashMap statusMap;
+	static SocketHttpServer server;
+	static FakeHttpRequest r;
+	
+	@Before
+	public void SetUp() throws IOException {
+		if(server == null) {
+			server = new SocketHttpServer(0);
+			int port = server.getLocalPort();
+			r = new FakeHttpRequest(server);
+			r.connect("localhost", port);
+		}
+	}
 	
 	public String getTestResponse(HashMap statusMap, int status, String method) {
 		String header = "";
@@ -37,7 +50,10 @@ public class HttpResponseTest {
 	
 	@Test
 	public void return404ForNotFoundURL() throws Exception {
-		httpResponse = new HttpResponse("GET", "/404", "", false);
+		r.setMethod("GET");
+		r.setPath("/404");
+		r.setAuthorize(false);
+		httpResponse = new HttpResponse(r);
 		statusMap = httpResponse.getStatusMap();
 		String response = getTestResponse(statusMap, 404, "GET");
 		assertEquals(response, httpResponse.getResponse());
@@ -45,7 +61,11 @@ public class HttpResponseTest {
 	
 	@Test
 	public void return200ForExistingURL() throws Exception {
-		httpResponse = new HttpResponse("GET", "/", "", false);
+		r.setMethod("GET");
+		r.setPath("/");
+		r.setAuthorize(false);
+		httpResponse = new HttpResponse(r);
+
 		statusMap = httpResponse.getStatusMap();
 		String response = getTestResponse(statusMap,200, "GET");
 		assertEquals(response, httpResponse.getResponse());
@@ -53,7 +73,10 @@ public class HttpResponseTest {
 	
 	@Test
 	public void return401IfAuthenticatedURL() throws Exception {
-		httpResponse = new HttpResponse("GET", "/logs", "", false);
+		r.setMethod("GET");
+		r.setPath("/logs");
+		r.setAuthorize(false);
+		httpResponse = new HttpResponse(r);
 		statusMap = httpResponse.getStatusMap();
 		String response = getTestResponse(statusMap,401, "GET");
 		assertEquals(response, httpResponse.getResponse());
@@ -61,25 +84,33 @@ public class HttpResponseTest {
 	
 	@Test
 	public void returnStatus200IfURLisExisting() throws Exception {
-		httpResponse = new HttpResponse("GET", "/", "", false);
+		r.setMethod("GET");
+		r.setPath("/");
+		httpResponse = new HttpResponse(r);
 		assertEquals(200, httpResponse.getStatusCode());
 	}
 
 	@Test
 	public void returnStatus404IfURLisNotExisting() throws Exception {
-		httpResponse = new HttpResponse("GET", "/404", "", false);
+		r.setMethod("GET");
+		r.setPath("/404");
+		httpResponse = new HttpResponse(r);
 		assertEquals(404, httpResponse.getStatusCode());
 	}
 
 	@Test
 	public void returnStatus401IfAuthRequired() throws Exception {
-		httpResponse = new HttpResponse("GET", "/logs", "", false);
+		r.setMethod("GET");
+		r.setPath("/logs");
+		httpResponse = new HttpResponse(r);
 		assertEquals(401, httpResponse.getStatusCode());
 	}
 	
 	@Test
 	public void testMethodOptions() throws Exception {
-		httpResponse = new HttpResponse("OPTIONS", "/method_options", "", false);
+		r.setMethod("OPTIONS");
+		r.setPath("/method_options");
+		httpResponse = new HttpResponse(r);
 		statusMap = httpResponse.getStatusMap();
 		String response = getTestResponse(statusMap, 200, "OPTIONS");
 		assertEquals(response, httpResponse.getResponse());
@@ -87,10 +118,34 @@ public class HttpResponseTest {
 	
 	@Test
 	public void testPost() throws Exception {
-		httpResponse = new HttpResponse("POST", "/forms", "", false);
+		r.setMethod("POST");
+		r.setPath("/forms");
+		r.setParameters("abc");
+		httpResponse = new HttpResponse(r);
 		statusMap = httpResponse.getStatusMap();
 		String response = getTestResponse(statusMap, 200, "");
 		assertEquals(response, httpResponse.getResponse());
 	}
 	
+	@Test
+	public void testPut() throws Exception {
+		r.setMethod("PUT");
+		r.setPath("/forms");
+		r.setParameters("abc");
+		httpResponse = new HttpResponse(r);
+		statusMap = httpResponse.getStatusMap();
+		String response = getTestResponse(statusMap, 200, "");
+		assertEquals(response, httpResponse.getResponse());
+	}
+	@Test
+	public void testPatch() throws Exception {
+		r.setMethod("Patch");
+		r.setPath("/patch-content.txt");
+		r.setParameters("abc");
+		r.setETag("abcdefg");
+		httpResponse = new HttpResponse(r);
+		statusMap = httpResponse.getStatusMap();
+		String response = getTestResponse(statusMap, 200, "");
+		assertEquals(response, httpResponse.getResponse());
+	}
 }

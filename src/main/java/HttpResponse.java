@@ -12,18 +12,34 @@ public class HttpResponse {
 	private String header = "";
 	private boolean isAuthorized;
 	public final HashMap<Integer, String> statusMap = new HashMap<Integer, String>();
+	private HttpRequest request;
+	private String eTag;
 	
-	public HttpResponse(String httpMethod, String url, String lastPost, boolean isAuthorized) {
+//	public HttpResponse(String httpMethod, String url, String lastPost, boolean isAuthorized) {
+//		statusMap.put(404, "Not Found");
+//		statusMap.put(401, "Authentication required");
+//		statusMap.put(200, "OK");
+//		this.requestMethod = httpMethod;
+//		this.url = url;
+//		this.lastPostData = lastPost;
+//		this.isAuthorized = isAuthorized;
+//		this.generateResponse();
+//	}
+	
+	public HttpResponse(HttpRequest r) {
+		this.request = r;
 		statusMap.put(404, "Not Found");
 		statusMap.put(401, "Authentication required");
 		statusMap.put(200, "OK");
-		this.requestMethod = httpMethod;
-		this.url = url;
-		this.lastPostData = lastPost;
-		this.isAuthorized = isAuthorized;
+		statusMap.put(204, "No Content");
+		this.requestMethod = r.method();
+		this.eTag = r.getETag();
+		this.url = r.getUrl();
+		this.lastPostData = r.getServer().getLastPostData();
+		this.isAuthorized = r.isAuthorized();
 		this.generateResponse();
 	}
-	
+
 	public void generateResponse() {
 		String responseBody = "=====START RESPONSE=====\r\n";
 		statusCode = 200;
@@ -42,8 +58,19 @@ public class HttpResponse {
 				if(this.lastPostData != null) {
 					responseBody += this.lastPostData + "\r\n";
 				}
+			} else if(url.contains("patch-content.txt")) {
+				if(this.lastPostData != null) {
+					responseBody += this.lastPostData + "\r\n";
+				} else {
+					responseBody += "default content\r\n";
+				}
 			} else if(!checkURL(url)) {
 				statusCode = 404;
+			}
+		} else if(requestMethod.equals("PATCH")) {
+			if(url.contains("patch-content.txt")) {
+				header += ("Content-Location: /patch-content.txt\r\nETag: \"" + request.getETag() + "\"\r\n");
+				statusCode = 204;
 			}
 		} else if(requestMethod.equals("PUT")) {
 			if(url.contains("file1")) {
@@ -58,22 +85,28 @@ public class HttpResponse {
 		}
 		
 		String statusText = statusMap.get(statusCode);
-		responseBody += ("<h1>" + statusCode + " " + statusText + "</h1>\r\n" +
+		if(statusCode != 204) {
+			responseBody += ("<h1>" + statusCode + " " + statusText + "</h1>\r\n" +
 						"=====END_OF_RESPONSE=====\r\n");
+			int contentLength = responseBody.length();
+			header +=
+			"Content-Length: " + contentLength + "\r\n" +
+		    "Content-Type: text/html\r\n\r\n";
+		} else {
+			responseBody = "";
+		}
 		String responseHeaderStatus = "HTTP/1.1 " + statusCode + " " + statusText + "\r\n";
 		
-		int contentLength = responseBody.length();
+		
 		
 		this.response = responseHeaderStatus +
 				header +
-				"Content-Length: " + contentLength + "\r\n" +
-			    "Content-Type: text/html\r\n\r\n" +
 			    responseBody;
 	}
 
 	private String getLogs() {
-		//TODO add a log
-		return "GET /log HTTP/1.1 \r\n" + "PUT /these HTTP/1.1 \r\n" + "HEAD /requests HTTP/1.1\r\n";
+		Logger logger = this.request.getServer().getLogger();
+		return logger.getLogs();
 	}
 
 	public int getStatusCode() {

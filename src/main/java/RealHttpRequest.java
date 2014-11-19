@@ -12,6 +12,7 @@ public class RealHttpRequest implements HttpRequest {
 	private int responseStatusCode;
 	private String parameters;
 	private boolean authorized = false;
+	private String eTag;
 
 	public RealHttpRequest(HttpServer server, Socket client) throws IOException {
 		this.server = server;
@@ -45,6 +46,7 @@ public class RealHttpRequest implements HttpRequest {
 		int contentLength = 0;
 		String header = request;
 		String line;
+		
 //		while((line = in.readLine()) != null) {
 //			System.out.println(line);
 //		}
@@ -52,8 +54,12 @@ public class RealHttpRequest implements HttpRequest {
             header += "\n" + line;
             if(requestMethod.startsWith("GET") && line.contains("Authorization: Basic")) {
             	this.authorized = true;
-            }
-            if (requestMethod.startsWith("POST") || requestMethod.startsWith("PUT")) {
+            } else if (requestMethod.startsWith("POST") || requestMethod.startsWith("PUT") || requestMethod.startsWith("PATCH")) {
+            	if(requestMethod.startsWith("PATCH")) {
+            		if (line.startsWith("If-Match:")) {
+            			this.eTag = line.replace("If-Match: ", "");
+            		}
+            	}
                 final String contentHeader = "Content-Length: ";
                 if (line.startsWith(contentHeader)) {
                     contentLength = Integer.parseInt(line.substring(contentHeader.length()));
@@ -61,14 +67,15 @@ public class RealHttpRequest implements HttpRequest {
             }
         }
 
-        if(requestMethod.startsWith("POST") || requestMethod.startsWith("PUT")) {
+        if(requestMethod.startsWith("POST") || requestMethod.startsWith("PUT") || requestMethod.startsWith("PATCH")) {
+        	//TODO: post data need to be an array or list
             StringBuilder body = new StringBuilder();
             int c = 0;
             for (int i = 0; i < contentLength; i++) {
                 c = in.read();
                 body.append((char) c);
             }
-            header += " " + body.toString();
+            header += "\nData: " + body.toString();
             this.parameters = body.toString();
         }
         //Authorization
@@ -104,5 +111,9 @@ public class RealHttpRequest implements HttpRequest {
 	
 	public boolean isAuthorized() {
 		return this.authorized;
+	}
+	
+	public String getETag() {
+		return this.eTag;
 	}
 }

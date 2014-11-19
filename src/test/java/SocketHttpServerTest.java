@@ -15,7 +15,6 @@ public class SocketHttpServerTest {
 	@Before
 	public void SetUp() throws IOException {
 		try{
-			System.out.println(server);
 			if(server == null)
 				server = new SocketHttpServer(port);
 		} catch (IOException e) {

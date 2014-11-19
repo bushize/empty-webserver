@@ -18,6 +18,7 @@ public class FakeHttpRequest implements HttpRequest {
 	private String method;
 	private String parameters;
 	private boolean isAuthorized;
+	private String eTag;
 	
 	public FakeHttpRequest(HttpServer server) throws IOException {
 		this.server = server;
@@ -35,6 +36,9 @@ public class FakeHttpRequest implements HttpRequest {
         if(this.parameters != null) {
         	requestStr += this.parameters;
         }
+        
+        Logger logger = server.getLogger();
+		logger.log(requestStr);
         InputStream inStream = new ByteArrayInputStream(requestStr.getBytes(StandardCharsets.UTF_8));
         BufferedReader input = new BufferedReader(new InputStreamReader(inStream));
         out.println(input.readLine());
@@ -86,4 +90,16 @@ public class FakeHttpRequest implements HttpRequest {
 		return this.isAuthorized;
 	}
 
+	public void setAuthorize(boolean b) {
+		this.isAuthorized = false;
+	}
+
+	@Override
+	public String getETag() {
+		return this.eTag;
+	}
+	
+	public void setETag(String eTag) {
+		this.eTag = eTag;
+	}
 }
