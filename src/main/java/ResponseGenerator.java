@@ -6,7 +6,7 @@ import java.io.InputStream;
 
 public class ResponseGenerator {
 	
-	private String statusCode;
+	private int statusCode;
 	private String statusText;
 	private String contentType;
 	private boolean isDirectory = false;
@@ -49,7 +49,7 @@ public class ResponseGenerator {
 		return bos.toByteArray();
 	}
 	
-	public String getStatusCode() {
+	public int getStatusCode() {
 		return statusCode;
 	}
 	
@@ -61,11 +61,11 @@ public class ResponseGenerator {
 	
 	private void get() {
 		if (checkFile()) {
-			statusCode = "200";
+			statusCode = 200;
 			statusText = "OK";
 		}
 		else {					
-			statusCode = "404";
+			statusCode = 404;
 			statusText = "Not Found";
 		}		
 	}

@@ -11,9 +11,8 @@ public class SocketListener {
 	private String socketInput;
 	private String ServerRoot;
 	
-	public SocketListener(Socket socket, String ServerRoot) {
+	public SocketListener(Socket socket) {
 		this.socket = socket;
-		this.ServerRoot = ServerRoot;
 	}
 
 	public void listen() throws IOException {
@@ -27,7 +26,7 @@ public class SocketListener {
 		StringTokenizer tokenizedLine = new StringTokenizer(socketInput);
 		String httpMethod = tokenizedLine.nextToken();
 		String path = tokenizedLine.nextToken();
-		RequestObject ro = new RequestObject(httpMethod, path, ServerRoot);
+		RequestObject ro = new RequestObject(httpMethod, path, Server.ServerDirectory);
 		
 		return ro;
 	}

@@ -31,6 +31,16 @@ public class ServerTest {
 		assertEquals("RUNNABLE",s.ServerStatus());
 	}
 
+	@Test
+	public void ReturnServerPath() throws Exception {
+		assertEquals(ServerRoot,Server.ServerDirectory);
+	}
+
+	@Test
+	public void ReturnServerPort() throws Exception {
+		assertEquals(5000,s.getPort());
+	}
+
 	@After
 	public void TearDown() throws IOException {
 		s.close();
