@@ -23,7 +23,7 @@ public class ResponseGenerator {
 			get();
 		else if (requestObject.getMethod().equals("POST"))
 			post();
-					
+
 		String response = "";
 		response += "HTTP/1.1 " + statusCode + " " +  statusText + "\r\n";
 		response += "Content-Type: " + contentType + "\r\n\r\n";
