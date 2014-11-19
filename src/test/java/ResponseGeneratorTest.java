@@ -8,6 +8,7 @@ public class ResponseGeneratorTest {
 
     private ResponseGenerator response;
     private RequestObject request;
+    private final String DIRECTORY = "";
 
     @Before
     public void setUp() throws Exception {
@@ -18,8 +19,7 @@ public class ResponseGeneratorTest {
     public void testGetHeaders() throws Exception {
         request.setMethod("GET");
         request.setPath("/404");
-        request.setDirectory("/");
-        response = new ResponseGenerator(request);
+        response = new ResponseGenerator(request, DIRECTORY);
         response.getHeaders();
         assertEquals("HTTP/1.1 404 Not Found\r\n" +
                 "Content-Type: null\r\n" +
@@ -36,8 +36,7 @@ public class ResponseGeneratorTest {
     public void testGetStatusCode() throws Exception {
         request.setMethod("GET");
         request.setPath("/404");
-        request.setDirectory("/");
-        response = new ResponseGenerator(request);
+        response = new ResponseGenerator(request, DIRECTORY);
         response.getHeaders();
         assertEquals(404, response.getStatusCode());
     }
@@ -46,8 +45,7 @@ public class ResponseGeneratorTest {
     public void testIsDirectory() throws Exception {
         request.setMethod("GET");
         request.setPath("/");
-        request.setDirectory(".");
-        response = new ResponseGenerator(request);
+        response = new ResponseGenerator(request, DIRECTORY);
         response.getHeaders();
         assertEquals(true, response.isDirectory());
     }
