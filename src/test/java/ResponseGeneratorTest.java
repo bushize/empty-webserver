@@ -7,13 +7,12 @@ public class ResponseGeneratorTest {
 
     private ResponseGenerator generator;
     private RequestObject requestObj;
-    //private final String DIRECTORY = "/Users/johnuba/Sample/java/cob_spec/public";
     private String DIRECTORY = System.getProperty("user.dir");
 
     @Before
     public void setUp() throws Exception {
         requestObj = new RequestObject();
-        DIRECTORY = DIRECTORY + "/src/test/files/";
+        DIRECTORY = DIRECTORY + "/src/test/files";
     }
 
     @Test
@@ -22,7 +21,7 @@ public class ResponseGeneratorTest {
         requestObj.setFile("/blank.gif");
     	generator = new ResponseGenerator(requestObj, DIRECTORY);
     	
-    	assertTrue(!generator.getContent().toString().equals(null));
+    	assertTrue(generator.getContent().length !=0 );
     }
 
     @Test
