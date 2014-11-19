@@ -25,6 +25,14 @@ public class ResponseGenerator {
 			get();
 		else if (requestObject.getMethod().equals("POST"))
 			post();
+		else if (requestObject.getMethod().equals("PUT"))
+			put();
+		else if (requestObject.getMethod().equals("DELETE"))
+			delete();
+		else if (requestObject.getMethod().equals("OPTIONS"))
+			options();	
+		else
+			notAllowed();
 
 		String response = "";
 		response += String.format("HTTP/1.1 %d %s%n", statusCode, statusText);
@@ -78,6 +86,22 @@ public class ResponseGenerator {
 	}
 	
 	private void post() {
+		
+	}
+	
+	private void put() {
+		
+	}
+	
+	private void delete() {
+		
+	}
+	
+	private void options() {
+		
+	}
+	
+	private void notAllowed() {
 		
 	}
 	

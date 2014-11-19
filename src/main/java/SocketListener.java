@@ -25,9 +25,6 @@ public class SocketListener {
 		StringTokenizer tokenizedLine = new StringTokenizer(socketInput);
 		String httpMethod = tokenizedLine.nextToken();
 		String path = tokenizedLine.nextToken();
-while(tokenizedLine.hasMoreTokens()) {		
-System.out.println("next token: " + tokenizedLine.nextToken());
-}
 		RequestObject ro = new RequestObject(httpMethod, path);
 		
 		return ro;
