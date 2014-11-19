@@ -43,7 +43,6 @@ public class Server {
 		this.socket = Client;
 	}
 
-
 	public String ServerStatus(){
 		return process.getState().toString();
 	}
