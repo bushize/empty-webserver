@@ -21,10 +21,8 @@ public class ResponseGeneratorTest {
         request.setPath("/404");
         response = new ResponseGenerator(request, DIRECTORY);
         response.getHeaders();
-        assertEquals("HTTP/1.1 404 Not Found\r\n" +
-                "Content-Type: null\r\n" +
-                "\r\n" +
-                "<h1>404 Not Found</h1>", response.getHeaders());
+        assertEquals("HTTP/1.1 404 Not Found" + System.lineSeparator() +
+                "Content-Type: null" + System.lineSeparator(), response.getHeaders());
     }
 
     @Test

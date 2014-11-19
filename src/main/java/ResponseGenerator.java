@@ -29,7 +29,6 @@ public class ResponseGenerator {
 		String response = "";
 		response += String.format("HTTP/1.1 %d %s%n", statusCode, statusText);
 		response += String.format("Content-Type: %s%n", contentType);
-        response += String.format("Content-Length: %d%n", getContent().length);
 		//response += "<h1>" + statusCode + " " + statusText + "</h1>";
 			
 		return response;
@@ -40,7 +39,6 @@ public class ResponseGenerator {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		byte[] content = new byte [4096];
 		int i = 0;
-		
 		InputStream inputStream = new FileInputStream(directory + requestObject.getPath());
 		
 		while ( (i = inputStream.read(content) ) > 0 ) {
