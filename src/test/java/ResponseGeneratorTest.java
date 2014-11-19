@@ -14,11 +14,6 @@ public class ResponseGeneratorTest {
         request = new RequestObject();
     }
 
-    @After
-    public void tearDown() throws Exception {
-
-    }
-
     @Test
     public void testGetHeaders() throws Exception {
         request.setMethod("GET");
@@ -51,7 +46,7 @@ public class ResponseGeneratorTest {
     public void testIsDirectory() throws Exception {
         request.setMethod("GET");
         request.setPath("/");
-        request.setDirectory("/");
+        request.setDirectory(".");
         response = new ResponseGenerator(request);
         response.getHeaders();
         assertEquals(true, response.isDirectory());
