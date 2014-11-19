@@ -1,6 +1,4 @@
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 import java.net.Socket;
 
 
@@ -15,16 +13,15 @@ public class ResponseWriter {
 	}
 	
 	public void writeHeaders(String response) throws IOException {
-		
-		System.out.println(response + "\n");
-		
-		out.print(response);
+        PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
+        writer.println(response);
+        writer.flush();
 	}
 	
 	public void writeContent(byte[] arr) throws IOException {
-		out = new PrintStream(new BufferedOutputStream(socket.getOutputStream()));		
-		out.write(arr, 0 , arr.length);
-		out.flush();		
+		OutputStream outputStream = socket.getOutputStream();
+		outputStream.write(arr);
+		outputStream.flush();
 	}
 	
 	public void closeStream() {

@@ -17,7 +17,7 @@ public class ResponseGenerator {
 		this.requestObject = requestObject;
 	}
 
-	public String getHeaders() {
+	public String getHeaders() throws IOException {
 				
 		if (requestObject.getMethod().equals("GET"))
 			get();
@@ -25,9 +25,10 @@ public class ResponseGenerator {
 			post();
 					
 		String response = "";
-		response += "HTTP/1.1 " + statusCode + " " +  statusText + "\r\n";
-		response += "Content-Type: " + contentType + "\r\n\r\n";
-		response += "<h1>" + statusCode + " " + statusText + "</h1>";
+		response += String.format("HTTP/1.1 %d %s%n", statusCode, statusText);
+		response += String.format("Content-Type: %s%n", contentType);
+        response += String.format("Content-Length: %d%n", getContent().length);
+		//response += "<h1>" + statusCode + " " + statusText + "</h1>";
 			
 		return response;
 	}
