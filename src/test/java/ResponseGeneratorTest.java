@@ -7,17 +7,19 @@ public class ResponseGeneratorTest {
 
     private ResponseGenerator generator;
     private RequestObject requestObj;
-    private final String DIRECTORY = "/Users/johnuba/Sample/java/cob_spec/public";
+    //private final String DIRECTORY = "/Users/johnuba/Sample/java/cob_spec/public";
+    private String DIRECTORY = System.getProperty("user.dir");
 
     @Before
     public void setUp() throws Exception {
         requestObj = new RequestObject();
+        DIRECTORY = DIRECTORY + "/src/test/files/";
     }
 
     @Test
     public void testGetContent() throws Exception {
     	requestObj.setMethod("GET");
-        requestObj.setFile("/image.jpeg");
+        requestObj.setFile("/blank.gif");
     	generator = new ResponseGenerator(requestObj, DIRECTORY);
     	
     	assertTrue(!generator.getContent().toString().equals(null));
@@ -26,7 +28,7 @@ public class ResponseGeneratorTest {
     @Test
     public void testFileIsFound() throws Exception {
         requestObj.setMethod("GET");
-        requestObj.setFile("/image.jpeg");
+        requestObj.setFile("/blank.gif");
         generator = new ResponseGenerator(requestObj, DIRECTORY);
         generator.getHeaders();
         
@@ -36,7 +38,7 @@ public class ResponseGeneratorTest {
     @Test
     public void testFileNotFound() throws Exception {
         requestObj.setMethod("GET");
-        requestObj.setFile("/image.asdsad");
+        requestObj.setFile("/blank.asdsad");
         generator = new ResponseGenerator(requestObj, DIRECTORY);
         generator.getHeaders();
         
