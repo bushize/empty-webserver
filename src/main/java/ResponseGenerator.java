@@ -38,21 +38,34 @@ public class ResponseGenerator {
 			notAllowed();
 
 		String response = "";
-		response += String.format("HTTP/1.1 %d %s%n", statusCode, statusText);
-		response += String.format("Content-Type: %s%n", contentType);
-
-		//Construct the message body
-		response += String.format("%n%n");
-		if (files != null) {
-			response += String.format(parentFolder);
-			for (String i : files) {
-				response += String.format(i);
-			}
+		response = ResponseHeader(response);
+		if (isDirectory) {
+			response = ResponseBody(response);
 		}
 
 		return response;
 	}
-	
+
+	private String ResponseHeader(String response) {
+		response += String.format("HTTP/1.1 %d %s%n", statusCode, statusText);
+		response += String.format("Content-Type: %s%n", contentType);
+		return response;
+	}
+
+	private String ResponseBody(String response) {
+		//Construct the message body
+		response += String.format("%n%n");
+		response += String.format("<html><head></head><body>");
+		if (files != null) {
+			response += String.format("Folder:" + parentFolder + "<br>");
+			for (String i : files) {
+				response += String.format("<a href=\"/" + i + "\">" + i + "</a><br>" );
+			}
+		}
+		response += String.format("</body></html>");
+		return response;
+	}
+
 	public byte[] getContent() throws IOException {
 		
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -102,11 +115,15 @@ public class ResponseGenerator {
 	}
 	
 	private void post() {
-		
+		if(requestObject.getPath().equals("/text-file.txt")) {
+            statusCode = 405;
+        }
 	}
 	
 	private void put() {
-		
+        if(requestObject.getPath().equals("/file1")) {
+            statusCode = 405;
+        }
 	}
 	
 	private void delete() {
@@ -143,10 +160,12 @@ public class ResponseGenerator {
 		else if (f.exists() && f.isDirectory()) {
 			isDirectory = true;
 			parentFolder = f.getName();
+			contentType = "text/html";
 			files = listDirectory(directory);
 			return true;
 		}
-		else 
+		else
+			contentType = "text/plain";
 			return false;
 			
 	}

@@ -22,6 +22,7 @@ public class ResponseGeneratorTest {
     	generator = new ResponseGenerator(requestObj, DIRECTORY);
     	
     	assertTrue(generator.getContent().length !=0 );
+        assertFalse(generator.getResponse().contains("<html>") );
     }
 
     @Test
@@ -79,5 +80,14 @@ public class ResponseGeneratorTest {
         generator = new ResponseGenerator(requestObj, DIRECTORY);
         generator.getResponse();
         assertEquals(false, generator.isDirectory());
-    }    
+    }
+
+    @Test
+    public void testPost405() throws Exception {
+        requestObj.setMethod("POST");
+        requestObj.setPath("/text-file.txt");
+        generator = new ResponseGenerator(requestObj, DIRECTORY);
+        generator.getResponse();
+        assertEquals(405, generator.getStatusCode());
+    }
 }
