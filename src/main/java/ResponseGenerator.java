@@ -64,7 +64,11 @@ public class ResponseGenerator {
 		response += String.format("Content-Type: %s%n", contentType);
         if(statusCode == 302) {
             response += "Location:http://localhost:5000/\n";
-        } else if (statusCode == 401) {
+        } else if (statusCode == 206) {
+            response += "Content-Range: 4\nDate: Thu, 20 Nov 2014 23:23:40 GMT\nAccept-Ranges: bytes\nContent-Length: 4";
+
+        }
+        else if (statusCode == 401) {
             response += "WWW-Authenticate: Basic realm=\"admin\"";
         }
         else if(requestObject.getMethod().equals("OPTIONS")) {
@@ -75,7 +79,7 @@ public class ResponseGenerator {
 
 	private String ResponseBody(String response) {
 		//Construct the message body
-		response += String.format("%n");
+		response += String.format("\n\n");
 		//response += String.format("<html><head></head><body>");
         if(responseBody != "") {
             response += responseBody;
@@ -87,7 +91,6 @@ public class ResponseGenerator {
 			}
 		}
 		//response += String.format("</body></html>");
-        //System.out.println(response);
 		return response;
 	}
 
@@ -121,7 +124,6 @@ public class ResponseGenerator {
 	private void get() throws IOException {
         if(requestObject.getPath().equals("/redirect")) {
             statusCode = 302;
-            //header = getHeader();
         }
         else if(requestObject.getPath().equals("/partial_content.txt")) {
             statusCode = 206;
@@ -132,9 +134,7 @@ public class ResponseGenerator {
                 BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
                 hasBody = true;
                 String line = reader.readLine();
-                if(line.length() > 4) {
-                    line = line.substring(0,4);
-                }
+                line = line.substring(0,4);
                 setResponseBody(line);
             } catch(Exception e) {
                 e.printStackTrace();
