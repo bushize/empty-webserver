@@ -1,8 +1,10 @@
+import java.util.HashMap;
+import java.util.Map;
 
 public class RequestObject {
 	private String method;
 	private String path;
-	
+
 	public RequestObject(String method, String path) {
 		this.method = method;
 		this.path = path;

@@ -13,6 +13,7 @@ public class ResponseGenerator {
 	private String directory;
 	private String[] files;
 	private String parentFolder;
+    private String body;
 
 	private RequestObject requestObject;
 
@@ -100,6 +101,12 @@ public class ResponseGenerator {
         else if(requestObject.getPath().equals("/logs")) {
             statusCode = 401;
             //header = getHeader();
+        }
+        else if (requestObject.getPath().equals("/parameters")) {
+            UrlQueryStringDecode urlDecoder = new UrlQueryStringDecode(requestObject.getPath());
+            String formattedQueryStrings = urlDecoder.getFormattedQueryStringPairs();
+            body = formattedQueryStrings;
+            statusCode = 200;
         }
 		else if (checkFile()) {
 			statusCode = 200;
