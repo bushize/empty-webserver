@@ -1,8 +1,8 @@
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class ResponseGenerator {
 	
@@ -15,6 +15,8 @@ public class ResponseGenerator {
 	private String parentFolder;
     private String body;
     private boolean hasContent = false;
+    private String responseBody = "";
+    private boolean hasBody = false;
 
 	private RequestObject requestObject;
 
@@ -22,6 +24,8 @@ public class ResponseGenerator {
 		this.requestObject = requestObject;
 		this.directory = directory;
         statusCode = 200;
+        statusText = "OK";
+        contentType = "text/html";
 	}
 
 	public String getHeader() throws IOException {
@@ -41,19 +45,29 @@ public class ResponseGenerator {
 
 		String response = "";
 		response = ResponseHeader(response);
-		if (isDirectory) {
-			response = ResponseBody(response);
+		if (hasBody) {
+                response = ResponseBody(response);
 		}
 
 		return response;
 	}
+
+    public void setResponseBody(String response) {
+        responseBody = response;
+    }
+    public String getResponseBody() {
+        return responseBody;
+    }
 
 	private String ResponseHeader(String response) {
 		response += String.format("HTTP/1.1 %d %s%n", statusCode, statusText);
 		response += String.format("Content-Type: %s%n", contentType);
         if(statusCode == 302) {
             response += "Location:http://localhost:5000/\n";
-        } else if(requestObject.getMethod().equals("OPTIONS")) {
+        } else if (statusCode == 401) {
+            response += "WWW-Authenticate: Basic realm=\"admin\"";
+        }
+        else if(requestObject.getMethod().equals("OPTIONS")) {
             response += "ALLOW: GET,HEAD,POST,OPTIONS,PUT\n";
         }
 		return response;
@@ -61,15 +75,19 @@ public class ResponseGenerator {
 
 	private String ResponseBody(String response) {
 		//Construct the message body
-		response += String.format("%n%n");
-		response += String.format("<html><head></head><body>");
+		response += String.format("%n");
+		//response += String.format("<html><head></head><body>");
+        if(responseBody != "") {
+            response += responseBody;
+        }
 		if (files != null) {
 			response += String.format("Folder:" + parentFolder + "<br>");
 			for (String i : files) {
 				response += String.format("<a href=\"/" + i + "\">" + i + "</a><br>" );
 			}
 		}
-		response += String.format("</body></html>");
+		//response += String.format("</body></html>");
+        //System.out.println(response);
 		return response;
 	}
 
@@ -100,14 +118,36 @@ public class ResponseGenerator {
 
 	/** HELPER METHODS **/
 	
-	private void get() {
+	private void get() throws IOException {
         if(requestObject.getPath().equals("/redirect")) {
             statusCode = 302;
             //header = getHeader();
         }
+        else if(requestObject.getPath().equals("/partial_content.txt")) {
+            statusCode = 206;
+            statusText = "Partial Content";
+            contentType = "text/plain";
+            try {
+                Path path = FileSystems.getDefault().getPath(directory + requestObject.getPath());
+                BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
+                hasBody = true;
+                String line = reader.readLine();
+                if(line.length() > 4) {
+                    line = line.substring(0,4);
+                }
+                setResponseBody(line);
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else if(requestObject.getPath().equals("/form")) {
+            statusCode = 200;
+        }
         else if(requestObject.getPath().equals("/logs")) {
             statusCode = 401;
-            //header = getHeader();
+            statusText = "Authentication Required";
+            setResponseBody("Authentication required");
+            hasBody = true;
         }
         else if (requestObject.getPath().equals("/parameters")) {
             UrlQueryStringDecode urlDecoder = new UrlQueryStringDecode(requestObject.getPath());
@@ -120,6 +160,8 @@ public class ResponseGenerator {
 		else {					
 			statusCode = 404;
 			statusText = "Not Found";
+            hasBody = true;
+            setResponseBody(statusCode + " " + statusText);
 		}		
 	}
 	
@@ -151,8 +193,8 @@ public class ResponseGenerator {
 		
 		String fileName = directory + requestObject.getPath();
 		File f = new File(fileName);
-		
-		if (f.exists() && !f.isDirectory() ) {
+
+        if (f.exists() && !f.isDirectory() ) {
             hasContent = true;
 			if (fileName.endsWith(".html") || fileName.endsWith(".htm"))
 				contentType = "text/html";
@@ -169,6 +211,7 @@ public class ResponseGenerator {
 		}
 		else if (f.exists() && f.isDirectory()) {
 			isDirectory = true;
+            hasBody = true;
 			parentFolder = f.getName();
 			contentType = "text/html";
 			files = listDirectory(directory);
