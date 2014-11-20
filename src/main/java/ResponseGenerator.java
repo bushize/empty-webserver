@@ -21,7 +21,7 @@ public class ResponseGenerator {
 		this.directory = directory;
 	}
 
-	public String getResponse() throws IOException {
+	public String getHeader() throws IOException {
 				
 		if (requestObject.getMethod().equals("GET"))
 			get();
@@ -93,9 +93,13 @@ public class ResponseGenerator {
 	/** HELPER METHODS **/
 	
 	private void get() {
-        if(requestObject.getPath().equals("/logs")) {
+        if(requestObject.getPath().equals("/redirect")) {
+            statusCode = 302;
+            //header = getHeader();
+        }
+        else if(requestObject.getPath().equals("/logs")) {
             statusCode = 401;
-            //header = getResponse();
+            //header = getHeader();
         }
 		else if (checkFile()) {
 			statusCode = 200;

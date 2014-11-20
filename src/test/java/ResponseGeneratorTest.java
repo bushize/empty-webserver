@@ -22,7 +22,7 @@ public class ResponseGeneratorTest {
     	generator = new ResponseGenerator(requestObj, DIRECTORY);
     	
     	assertTrue(generator.getContent().length !=0 );
-        assertFalse(generator.getResponse().contains("<html>") );
+        assertFalse(generator.getHeader().contains("<html>"));
     }
 
     @Test
@@ -30,7 +30,7 @@ public class ResponseGeneratorTest {
         requestObj.setMethod("GET");
         requestObj.setPath("/blank.gif");
         generator = new ResponseGenerator(requestObj, DIRECTORY);
-        generator.getResponse();
+        generator.getHeader();
         
         assertEquals(200, generator.getStatusCode());
     }
@@ -40,9 +40,9 @@ public class ResponseGeneratorTest {
         requestObj.setMethod("GET");
         requestObj.setPath("/");
         generator = new ResponseGenerator(requestObj, DIRECTORY);
-        generator.getResponse();
+        generator.getHeader();
 
-        assertTrue(generator.getResponse().contains("blank.gif"));
+        assertTrue(generator.getHeader().contains("blank.gif"));
     }
 
     @Test
@@ -50,8 +50,8 @@ public class ResponseGeneratorTest {
         requestObj.setMethod("GET");
         requestObj.setPath("/");
         generator = new ResponseGenerator(requestObj, DIRECTORY);
-        generator.getResponse();
-        assertTrue(generator.getResponse().contains("files"));
+        generator.getHeader();
+        assertTrue(generator.getHeader().contains("files"));
     }
 
     @Test
@@ -59,7 +59,7 @@ public class ResponseGeneratorTest {
         requestObj.setMethod("GET");
         requestObj.setPath("/blank.asdsad");
         generator = new ResponseGenerator(requestObj, DIRECTORY);
-        generator.getResponse();
+        generator.getHeader();
         
         assertEquals(404, generator.getStatusCode());
     }    
@@ -69,7 +69,7 @@ public class ResponseGeneratorTest {
         requestObj.setMethod("GET");
         requestObj.setPath("/");
         generator = new ResponseGenerator(requestObj, DIRECTORY);
-        generator.getResponse();
+        generator.getHeader();
         assertEquals(true, generator.isDirectory());
     }
     
@@ -78,7 +78,7 @@ public class ResponseGeneratorTest {
         requestObj.setMethod("GET");
         requestObj.setPath("/image.jpeg");
         generator = new ResponseGenerator(requestObj, DIRECTORY);
-        generator.getResponse();
+        generator.getHeader();
         assertEquals(false, generator.isDirectory());
     }
 
@@ -87,7 +87,7 @@ public class ResponseGeneratorTest {
         requestObj.setMethod("POST");
         requestObj.setPath("/text-file.txt");
         generator = new ResponseGenerator(requestObj, DIRECTORY);
-        generator.getResponse();
+        generator.getHeader();
         assertEquals(405, generator.getStatusCode());
     }
 }
