@@ -29,7 +29,7 @@ public class ResponseGeneratorTest {
         requestObj.setMethod("GET");
         requestObj.setPath("/blank.gif");
         generator = new ResponseGenerator(requestObj, DIRECTORY);
-        generator.getHeaders();
+        generator.getResponse();
         
         assertEquals(200, generator.getStatusCode());
     }
@@ -39,7 +39,7 @@ public class ResponseGeneratorTest {
         requestObj.setMethod("GET");
         requestObj.setPath("/blank.asdsad");
         generator = new ResponseGenerator(requestObj, DIRECTORY);
-        generator.getHeaders();
+        generator.getResponse();
         
         assertEquals(404, generator.getStatusCode());
     }    
@@ -49,7 +49,7 @@ public class ResponseGeneratorTest {
         requestObj.setMethod("GET");
         requestObj.setPath("/");
         generator = new ResponseGenerator(requestObj, DIRECTORY);
-        generator.getHeaders();
+        generator.getResponse();
         assertEquals(true, generator.isDirectory());
     }
     
@@ -58,7 +58,7 @@ public class ResponseGeneratorTest {
         requestObj.setMethod("GET");
         requestObj.setPath("/image.jpeg");
         generator = new ResponseGenerator(requestObj, DIRECTORY);
-        generator.getHeaders();
+        generator.getResponse();
         assertEquals(false, generator.isDirectory());
     }    
 }

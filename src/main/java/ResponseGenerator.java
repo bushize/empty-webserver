@@ -19,7 +19,7 @@ public class ResponseGenerator {
 		this.directory = directory;
 	}
 
-	public String getHeaders() throws IOException {
+	public String getResponse() throws IOException {
 				
 		if (requestObject.getMethod().equals("GET"))
 			get();
@@ -69,7 +69,11 @@ public class ResponseGenerator {
 	/** HELPER METHODS **/
 	
 	private void get() {
-		if (checkFile()) {
+        if(requestObject.getPath().equals("/logs")) {
+            statusCode = 401;
+            //header = getResponse();
+        }
+		else if (checkFile()) {
 			statusCode = 200;
 			statusText = "OK";
 		}
