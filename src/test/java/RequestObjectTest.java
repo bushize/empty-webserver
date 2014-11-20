@@ -22,7 +22,7 @@ public class RequestObjectTest {
 	@Test
 	public void PathIsSet() {
 		RequestObject ro = new RequestObject("GET", "image.jpeg");
-		assertEquals("image.jpeg", ro.getFile());
+		assertEquals("image.jpeg", ro.getPath());
 	}	
 	
 	@Test
@@ -34,13 +34,13 @@ public class RequestObjectTest {
 	@Test
 	public void PathIsWrong() {
 		RequestObject ro = new RequestObject("GET", "image.jpeg");
-		assertNotEquals("awds", ro.getFile());
+		assertNotEquals("awds", ro.getPath());
 	}
 	
     @Test
     public void testSetPath() {
-        request.setFile("/");
-        assertEquals("/", request.getFile());
+        request.setPath("/");
+        assertEquals("/", request.getPath());
     }
 
     @Test

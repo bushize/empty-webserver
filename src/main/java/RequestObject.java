@@ -1,11 +1,11 @@
 
 public class RequestObject {
 	private String method;
-	private String file;
+	private String path;
 	
-	public RequestObject(String method, String file) {
+	public RequestObject(String method, String path) {
 		this.method = method;
-		this.file = file;     
+		this.path = path;
 	}
 
     public RequestObject() {}
@@ -17,11 +17,11 @@ public class RequestObject {
 		return method;
 	}
 	
-	public void setFile(String file) {
-		this.file = file;
+	public void setPath(String path) {
+		this.path = path;
 	}
 	
-	public String getFile() {
-		return file;
+	public String getPath() {
+		return path;
 	}
 }

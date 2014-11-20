@@ -46,7 +46,7 @@ public class ResponseGenerator {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		byte[] content = new byte [4096];
 		int i = 0;
-		InputStream inputStream = new FileInputStream(directory + requestObject.getFile());
+		InputStream inputStream = new FileInputStream(directory + requestObject.getPath());
 		
 		while ( (i = inputStream.read(content) ) > 0 ) {
 			bos.write(content, 0 ,i);
@@ -65,13 +65,7 @@ public class ResponseGenerator {
 		return isDirectory;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
+
 	/** HELPER METHODS **/
 	
 	private void get() {
@@ -107,7 +101,7 @@ public class ResponseGenerator {
 	
 	private boolean checkFile() {
 		
-		String fileName = directory + requestObject.getFile();
+		String fileName = directory + requestObject.getPath();
 		File f = new File(fileName);
 		
 		if (f.exists() && !f.isDirectory() ) {

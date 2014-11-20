@@ -18,7 +18,7 @@ public class ResponseGeneratorTest {
     @Test
     public void testGetContent() throws Exception {
     	requestObj.setMethod("GET");
-        requestObj.setFile("/blank.gif");
+        requestObj.setPath("/blank.gif");
     	generator = new ResponseGenerator(requestObj, DIRECTORY);
     	
     	assertTrue(generator.getContent().length !=0 );
@@ -27,7 +27,7 @@ public class ResponseGeneratorTest {
     @Test
     public void testFileIsFound() throws Exception {
         requestObj.setMethod("GET");
-        requestObj.setFile("/blank.gif");
+        requestObj.setPath("/blank.gif");
         generator = new ResponseGenerator(requestObj, DIRECTORY);
         generator.getHeaders();
         
@@ -37,7 +37,7 @@ public class ResponseGeneratorTest {
     @Test
     public void testFileNotFound() throws Exception {
         requestObj.setMethod("GET");
-        requestObj.setFile("/blank.asdsad");
+        requestObj.setPath("/blank.asdsad");
         generator = new ResponseGenerator(requestObj, DIRECTORY);
         generator.getHeaders();
         
@@ -47,7 +47,7 @@ public class ResponseGeneratorTest {
     @Test
     public void testIsDirectory() throws Exception {
         requestObj.setMethod("GET");
-        requestObj.setFile("/");
+        requestObj.setPath("/");
         generator = new ResponseGenerator(requestObj, DIRECTORY);
         generator.getHeaders();
         assertEquals(true, generator.isDirectory());
@@ -56,7 +56,7 @@ public class ResponseGeneratorTest {
     @Test
     public void testIsNotDirectory() throws Exception {
         requestObj.setMethod("GET");
-        requestObj.setFile("/image.jpeg");
+        requestObj.setPath("/image.jpeg");
         generator = new ResponseGenerator(requestObj, DIRECTORY);
         generator.getHeaders();
         assertEquals(false, generator.isDirectory());
