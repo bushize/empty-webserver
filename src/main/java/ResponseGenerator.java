@@ -12,6 +12,7 @@ public class ResponseGenerator {
 	private boolean isDirectory = false;
 	private String directory;
 	private String[] files;
+	private String parentFolder;
 
 	private RequestObject requestObject;
 
@@ -39,7 +40,10 @@ public class ResponseGenerator {
 		response += String.format("HTTP/1.1 %d %s%n", statusCode, statusText);
 		response += String.format("Content-Type: %s%n", contentType);
 
+		//Construct the message body
+		response += String.format("%n%n");
 		if (files != null) {
+			response += String.format(parentFolder);
 			for (String i : files) {
 				response += String.format(i);
 			}
@@ -131,6 +135,7 @@ public class ResponseGenerator {
 		}
 		else if (f.exists() && f.isDirectory()) {
 			isDirectory = true;
+			parentFolder = f.getName();
 			files = listDirectory(directory);
 			return true;
 		}
