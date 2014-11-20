@@ -149,10 +149,12 @@ public class ResponseGenerator {
             setResponseBody("Authentication required");
             hasBody = true;
         }
-        else if (requestObject.getPath().equals("/parameters")) {
+        else if (requestObject.getPath().contains("/parameters")) {
             UrlQueryStringDecode urlDecoder = new UrlQueryStringDecode(requestObject.getPath());
             String formattedQueryStrings = urlDecoder.getFormattedQueryStringPairs();
             body = formattedQueryStrings;
+            hasBody = true;
+            setResponseBody(body);
         }
 		else if (checkFile()) {
 			statusText = "OK";
