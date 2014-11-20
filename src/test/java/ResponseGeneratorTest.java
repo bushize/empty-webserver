@@ -35,13 +35,22 @@ public class ResponseGeneratorTest {
     }
 
     @Test
-    public void testFileIsFoundandListAllContent() throws Exception {
+    public void testListAllContent() throws Exception {
         requestObj.setMethod("GET");
         requestObj.setPath("/");
         generator = new ResponseGenerator(requestObj, DIRECTORY);
         generator.getResponse();
 
         assertTrue(generator.getResponse().contains("blank.gif"));
+    }
+
+    @Test
+    public void tesGetParentDirectoryName() throws Exception {
+        requestObj.setMethod("GET");
+        requestObj.setPath("/");
+        generator = new ResponseGenerator(requestObj, DIRECTORY);
+        generator.getResponse();
+        assertTrue(generator.getResponse().contains("files"));
     }
 
     @Test
