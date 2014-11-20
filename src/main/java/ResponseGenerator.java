@@ -38,7 +38,9 @@ public class ResponseGenerator {
 
 		String response = "";
 		response = ResponseHeader(response);
-		response = ResponseBody(response);
+		if (isDirectory) {
+			response = ResponseBody(response);
+		}
 
 		return response;
 	}
