@@ -52,7 +52,9 @@ public class ResponseGenerator {
 		response += String.format("HTTP/1.1 %d %s%n", statusCode, statusText);
 		response += String.format("Content-Type: %s%n", contentType);
         if(statusCode == 302) {
-            response += "Location:http://localhost:5000/";
+            response += "Location:http://localhost:5000/\n";
+        } else if(requestObject.getMethod().equals("OPTIONS")) {
+            response += "ALLOW: GET,HEAD,POST,OPTIONS,PUT\n";
         }
 		return response;
 	}
@@ -138,6 +140,7 @@ public class ResponseGenerator {
 	}
 	
 	private void options() {
+
 	}
 	
 	private void notAllowed() {
