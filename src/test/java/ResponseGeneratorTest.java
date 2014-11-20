@@ -33,7 +33,17 @@ public class ResponseGeneratorTest {
         
         assertEquals(200, generator.getStatusCode());
     }
-    
+
+    @Test
+    public void testFileIsFoundandListAllContent() throws Exception {
+        requestObj.setMethod("GET");
+        requestObj.setPath("/");
+        generator = new ResponseGenerator(requestObj, DIRECTORY);
+        generator.getResponse();
+
+        assertTrue(generator.getResponse().contains("blank.gif"));
+    }
+
     @Test
     public void testFileNotFound() throws Exception {
         requestObj.setMethod("GET");

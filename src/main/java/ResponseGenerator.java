@@ -11,7 +11,8 @@ public class ResponseGenerator {
 	private String contentType;
 	private boolean isDirectory = false;
 	private String directory;
-	
+	private String[] files;
+
 	private RequestObject requestObject;
 
 	public ResponseGenerator(RequestObject requestObject, String directory) {
@@ -37,7 +38,13 @@ public class ResponseGenerator {
 		String response = "";
 		response += String.format("HTTP/1.1 %d %s%n", statusCode, statusText);
 		response += String.format("Content-Type: %s%n", contentType);
-			
+
+		if (files != null) {
+			for (String i : files) {
+				response += String.format(i);
+			}
+		}
+
 		return response;
 	}
 	
@@ -124,10 +131,24 @@ public class ResponseGenerator {
 		}
 		else if (f.exists() && f.isDirectory()) {
 			isDirectory = true;
+			files = listDirectory(directory);
 			return true;
 		}
 		else 
 			return false;
 			
+	}
+
+	private String[] listDirectory(String ServerDirectory){
+
+		File f = null;
+		String[] files;
+
+		f = new File(ServerDirectory);
+
+		files = f.list();
+
+		return files;
+
 	}
 }
