@@ -49,6 +49,9 @@ public class ResponseGenerator {
 	private String ResponseHeader(String response) {
 		response += String.format("HTTP/1.1 %d %s%n", statusCode, statusText);
 		response += String.format("Content-Type: %s%n", contentType);
+        if(statusCode == 302) {
+            response += "Location:http://localhost:5000/";
+        }
 		return response;
 	}
 
