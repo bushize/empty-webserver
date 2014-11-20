@@ -108,11 +108,15 @@ public class ResponseGenerator {
 	}
 	
 	private void post() {
-		
+		if(requestObject.getPath().equals("/text-file.txt")) {
+            statusCode = 405;
+        }
 	}
 	
 	private void put() {
-		
+        if(requestObject.getPath().equals("/file1")) {
+            statusCode = 405;
+        }
 	}
 	
 	private void delete() {
