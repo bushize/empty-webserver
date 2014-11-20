@@ -14,12 +14,14 @@ public class ResponseGenerator {
 	private String[] files;
 	private String parentFolder;
     private String body;
+    private boolean hasContent = false;
 
 	private RequestObject requestObject;
 
 	public ResponseGenerator(RequestObject requestObject, String directory) {
 		this.requestObject = requestObject;
 		this.directory = directory;
+        statusCode = 200;
 	}
 
 	public String getHeader() throws IOException {
@@ -109,10 +111,8 @@ public class ResponseGenerator {
             UrlQueryStringDecode urlDecoder = new UrlQueryStringDecode(requestObject.getPath());
             String formattedQueryStrings = urlDecoder.getFormattedQueryStringPairs();
             body = formattedQueryStrings;
-            statusCode = 200;
         }
 		else if (checkFile()) {
-			statusCode = 200;
 			statusText = "OK";
 		}
 		else {					
@@ -138,7 +138,6 @@ public class ResponseGenerator {
 	}
 	
 	private void options() {
-		
 	}
 	
 	private void notAllowed() {
@@ -151,6 +150,7 @@ public class ResponseGenerator {
 		File f = new File(fileName);
 		
 		if (f.exists() && !f.isDirectory() ) {
+            hasContent = true;
 			if (fileName.endsWith(".html") || fileName.endsWith(".htm"))
 				contentType = "text/html";
 			else if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg"))
@@ -189,4 +189,8 @@ public class ResponseGenerator {
 		return files;
 
 	}
+
+    public boolean isHasContent() {
+        return hasContent;
+    }
 }
