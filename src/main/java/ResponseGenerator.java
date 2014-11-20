@@ -64,7 +64,7 @@ public class ResponseGenerator {
 		response += String.format("%n%n");
 		response += String.format("<html><head></head><body>");
 		if (files != null) {
-			response += String.format("Folder:" + parentFolder + "<br>");
+			response += String.format("FOLDER:" + parentFolder + "<br>");
 			for (String i : files) {
 				response += String.format("<a href=\"/" + i + "\">" + i + "</a><br>" );
 			}
@@ -171,7 +171,7 @@ public class ResponseGenerator {
 			isDirectory = true;
 			parentFolder = f.getName();
 			contentType = "text/html";
-			files = listDirectory(directory);
+			files = listDirectory(fileName);
 			return true;
 		}
 		else
@@ -186,9 +186,7 @@ public class ResponseGenerator {
 		String[] files;
 
 		f = new File(ServerDirectory);
-
 		files = f.list();
-
 		return files;
 
 	}
