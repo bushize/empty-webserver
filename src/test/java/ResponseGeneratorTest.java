@@ -22,6 +22,7 @@ public class ResponseGeneratorTest {
     	generator = new ResponseGenerator(requestObj, DIRECTORY);
     	
     	assertTrue(generator.getContent().length !=0 );
+        assertFalse(generator.getResponse().contains("<html>") );
     }
 
     @Test
